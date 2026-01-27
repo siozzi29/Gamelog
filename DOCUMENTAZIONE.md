@@ -31,6 +31,7 @@
 
 ---
 
+<a name="capitolo-0"></a>
 # Capitolo 0: Introduzione e Obiettivi
 
 ## 0.1 Panoramica del Progetto
@@ -111,6 +112,7 @@ La presente documentazione è organizzata come segue:
 
 ---
 
+<a name="capitolo-1"></a>
 # Capitolo 1: Analisi del Problema e Requisiti
 
 ## 1.1 Analisi del Dominio
@@ -214,6 +216,7 @@ Il dominio applicativo è quello dei videogiochi su Steam e della selezione di h
 
 ---
 
+<a name="capitolo-2"></a>
 # Capitolo 2: Architettura del Sistema
 
 ## 2.1 Architettura di Alto Livello
@@ -343,6 +346,7 @@ INPUT UTENTE
 
 ---
 
+<a name="capitolo-3"></a>
 # Capitolo 3: Dataset e Preprocessing
 
 ## 3.1 Descrizione del Dataset
@@ -576,6 +580,7 @@ Categorizzazione per fascia:
 
 ---
 
+<a name="capitolo-4"></a>
 # Capitolo 4: Ragionamento Logico e Knowledge Base
 
 ## 4.1 Fondamenti Teorici
@@ -811,6 +816,7 @@ Main → KB:
 
 ---
 
+<a name="capitolo-5"></a>
 # Capitolo 5: Ragionamento Probabilistico e Rete Bayesiana
 
 ## 5.1 Teoria delle Reti Bayesiane
@@ -1110,6 +1116,7 @@ VALIDAZIONE 3: Plausibilità Semantica
 
 ---
 
+<a name="capitolo-5-8"></a>
 # Capitolo 5.8: Estensioni della Rete Bayesiana
 
 ## 5.8.1 Integrazione di Variabili Temporali
@@ -1184,6 +1191,7 @@ Repeat until convergence
 
 ---
 
+<a name="capitolo-6-7"></a>
 # Capitolo 6.7: Analisi Avanzata del CSP
 
 ## 6.7.1 Teoria della Complessità e Treewidth
@@ -1284,6 +1292,7 @@ Vincolo Rilassato:
 
 ---
 
+<a name="capitolo-7-4"></a>
 # Capitolo 7.4: Case Study Completi
 
 ## Case Study 1: Gamer Casual con Budget Limitato
@@ -1450,6 +1459,7 @@ Vincolo Rilassato:
 
 ---
 
+<a name="capitolo-8-7"></a>
 # Capitolo 8.7: Benchmark Comparativi
 
 ## 8.7.1 Confronto con Sistemi Alternativi
@@ -1562,6 +1572,7 @@ Conclusione: Sistema robusto fino a 15% di incertezza
 
 ---
 
+<a name="capitolo-10"></a>
 # Capitolo 10: Best Practices e Linee Guida Operative
 
 ## 10.1 Deployment e Configurazione
@@ -1762,6 +1773,7 @@ def recalibrate_cpd(train_data, test_data):
 
 ---
 
+<a name="capitolo-11"></a>
 # Capitolo 11: Metriche Avanzate e KPI
 
 ## 11.1 Key Performance Indicators
@@ -1823,6 +1835,7 @@ Validity:         96/100 ✓
 
 ---
 
+<a name="capitolo-12"></a>
 # Capitolo 12: Roadmap Tecnica Dettagliata
 
 ## 12.1 Q1 2025: Fase 1 - Real-time Integration
