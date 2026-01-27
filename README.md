@@ -27,7 +27,7 @@ Progetto individuale per l'esame di **Ingegneria della Conoscenza (ICon)** - Uni
 
 # Gamelog Project
 ### Panoramica del Progetto
-Sviluppato da: [I tuoi Nomi]
+Sviluppato da: Simone Iozzi
 
 ## Setup iniziale dell'ambiente di lavoro:
 **- Cloning**  
