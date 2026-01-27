@@ -2285,7 +2285,7 @@ https://www.gurobi.com/
 
 ### 1. Success Score
 
-$$\text{success\_score} = \frac{\text{rating}}{10} \times \log_{10}(\text{review\_count} + 1)$$
+$$\text{Success Score} = \frac{\text{Rating}}{10} \times \log_{10}(\text{Review Count} + 1)$$
 
 **Interpretazione:**
 - Componente rating: qualità percepita [0, 1]
