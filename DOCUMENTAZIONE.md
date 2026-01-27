@@ -1572,7 +1572,7 @@ Conclusione: Sistema robusto fino a 15% di incertezza
 
 ---
 
-<a name="capitolo-10"></a>
+<a name="capitolo-9"></a>
 # Capitolo 10: Best Practices e Linee Guida Operative
 
 ## 10.1 Deployment e Configurazione
