@@ -31,7 +31,7 @@
 
 ---
 
-# Capitolo 0: Introduzione e Obiettivi
+# Capitolo 0: Introduzione e Obiettivi {#capitolo-0}
 
 ## 0.1 Panoramica del Progetto
 
@@ -111,7 +111,7 @@ La presente documentazione è organizzata come segue:
 
 ---
 
-# Capitolo 1: Analisi del Problema e Requisiti
+# Capitolo 1: Analisi del Problema e Requisiti {#capitolo-1}
 
 ## 1.1 Analisi del Dominio
 
@@ -214,7 +214,7 @@ Il dominio applicativo è quello dei videogiochi su Steam e della selezione di h
 
 ---
 
-# Capitolo 2: Architettura del Sistema
+# Capitolo 2: Architettura del Sistema {#capitolo-2}
 
 ## 2.1 Architettura di Alto Livello
 
@@ -343,7 +343,7 @@ INPUT UTENTE
 
 ---
 
-# Capitolo 3: Dataset e Preprocessing
+# Capitolo 3: Dataset e Preprocessing {#capitolo-3}
 
 ## 3.1 Descrizione del Dataset
 
@@ -576,7 +576,7 @@ Categorizzazione per fascia:
 
 ---
 
-# Capitolo 4: Ragionamento Logico e Knowledge Base
+# Capitolo 4: Ragionamento Logico e Knowledge Base  {#capitolo-4}
 
 ## 4.1 Fondamenti Teorici
 
@@ -811,7 +811,7 @@ Main → KB:
 
 ---
 
-# Capitolo 5: Ragionamento Probabilistico e Rete Bayesiana
+# Capitolo 5: Ragionamento Probabilistico e Rete Bayesiana {#capitolo-5}
 
 ## 5.1 Teoria delle Reti Bayesiane
 
@@ -1110,7 +1110,7 @@ VALIDAZIONE 3: Plausibilità Semantica
 
 ---
 
-# Capitolo 5.8: Estensioni della Rete Bayesiana
+# Capitolo 5.8: Estensioni della Rete Bayesiana {#capitolo-5.8}
 
 ## 5.8.1 Integrazione di Variabili Temporali
 
@@ -1184,7 +1184,7 @@ Repeat until convergence
 
 ---
 
-# Capitolo 6.7: Analisi Avanzata del CSP
+# Capitolo 6.7: Analisi Avanzata del CSP {#capitolo-6}
 
 ## 6.7.1 Teoria della Complessità e Treewidth
 
@@ -1284,7 +1284,7 @@ Vincolo Rilassato:
 
 ---
 
-# Capitolo 7.4: Case Study Completi
+# Capitolo 7.4: Case Study Completi {#capitolo-7}
 
 ## Case Study 1: Gamer Casual con Budget Limitato
 
@@ -1450,7 +1450,7 @@ Vincolo Rilassato:
 
 ---
 
-# Capitolo 8.7: Benchmark Comparativi
+# Capitolo 8.7: Benchmark Comparativi {#capitolo-8}
 
 ## 8.7.1 Confronto con Sistemi Alternativi
 
@@ -1562,7 +1562,7 @@ Conclusione: Sistema robusto fino a 15% di incertezza
 
 ---
 
-# Capitolo 10: Best Practices e Linee Guida Operative
+# Capitolo 10: Best Practices e Linee Guida Operative {#capitolo-10}
 
 ## 10.1 Deployment e Configurazione
 
@@ -1762,7 +1762,7 @@ def recalibrate_cpd(train_data, test_data):
 
 ---
 
-# Capitolo 11: Metriche Avanzate e KPI
+# Capitolo 11: Metriche Avanzate e KPI {#capitolo-11}
 
 ## 11.1 Key Performance Indicators
 
@@ -1823,7 +1823,7 @@ Validity:         96/100 ✓
 
 ---
 
-# Capitolo 12: Roadmap Tecnica Dettagliata
+# Capitolo 12: Roadmap Tecnica Dettagliata {#capitolo-12}
 
 ## 12.1 Q1 2025: Fase 1 - Real-time Integration
 
