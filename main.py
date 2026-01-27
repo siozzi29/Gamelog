@@ -5,7 +5,7 @@ import hardware_optimizer
 
 def main():
     print("="*30)
-    print(" STEAM AI ADVISOR - STARTUP ")
+    print(" GAMELOG - STARTUP ")
     print("="*30)
 
     # 1. Caricamento Iniziale
