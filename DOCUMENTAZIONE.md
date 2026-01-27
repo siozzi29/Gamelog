@@ -1191,7 +1191,7 @@ Repeat until convergence
 
 ---
 
-<a name="capitolo-6-7"></a>
+<a name="capitolo-6"></a>
 # Capitolo 6.7: Analisi Avanzata del CSP
 
 ## 6.7.1 Teoria della Complessità e Treewidth
@@ -1292,7 +1292,7 @@ Vincolo Rilassato:
 
 ---
 
-<a name="capitolo-7-4"></a>
+<a name="capitolo-7"></a>
 # Capitolo 7.4: Case Study Completi
 
 ## Case Study 1: Gamer Casual con Budget Limitato
@@ -1459,7 +1459,7 @@ Vincolo Rilassato:
 
 ---
 
-<a name="capitolo-8-7"></a>
+<a name="capitolo-8"></a>
 # Capitolo 8.7: Benchmark Comparativi
 
 ## 8.7.1 Confronto con Sistemi Alternativi
