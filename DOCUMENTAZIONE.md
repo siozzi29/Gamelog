@@ -2279,6 +2279,8 @@ https://www.gurobi.com/
 - Pyodide Documentation (https://pyodide.org/)
 
 ---
+
+<a name="appendice-d"></a>
 # Appendice D: Formule Matematiche Dettagliate 
 
 ## Formule Utilizzate nel Progetto
@@ -2344,7 +2346,8 @@ dove:
 
 ---
 
-# Appendice E: Glossario Tecnico {#appendice-e}
+<a name="appendice-e"></a>
+# Appendice E: Glossario Tecnico 
 
 **Bayesian Network:** Grafo orientato aciclico che rappresenta dipendenze probabilistiche
 
