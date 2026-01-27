@@ -2,3 +2,4 @@ pandas
 pyDatalog
 pgmpy
 python-constraint
+scikit-learn
