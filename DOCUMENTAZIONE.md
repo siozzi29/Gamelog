@@ -23,6 +23,8 @@
 - [Capitolo 7: Integrazione dei Moduli](#capitolo-7)
 - [Capitolo 8: Risultati Sperimentali e Valutazione](#capitolo-8)
 - [Capitolo 9: Sviluppi Futuri e Conclusioni](#capitolo-9)
+- [Capitolo 10: Metriche Avanzate e KPI](#capitolo-10)
+- [Capitolo 11: Roadmap Tecnica Dettagliata](#capitolo-11)
 - [Appendice A: Specifiche Tecniche](#appendice-a)
 - [Appendice B: Guida all'Installazione](#appendice-b)
 - [Appendice C: Riferimenti Bibliografici](#appendice-c)
@@ -1192,9 +1194,9 @@ Repeat until convergence
 ---
 
 <a name="capitolo-6"></a>
-# Capitolo 6.7: Analisi Avanzata del CSP
+# Capitolo 6: Analisi Avanzata del CSP
 
-## 6.7.1 Teoria della Complessità e Treewidth
+## 6.1 Teoria della Complessità e Treewidth
 
 ### Analisi della Complessità del Nostro CSP
 
@@ -1238,7 +1240,7 @@ Per un CSP con treewidth `w`:
 
 Questa decomposizione riduce lo spazio di ricerca mediante dynamic programming.
 
-## 6.7.2 Soft Constraints e Ottimizzazione
+## 6.2 Soft Constraints e Ottimizzazione
 
 Oltre ai vincoli hard (must-satisfy), abbiamo soft constraints (preferenze):
 
@@ -1256,7 +1258,7 @@ total_cost = Σ weight_i × cost_i
 best_config = argmin(total_cost) for all valid configs
 ```
 
-## 6.7.3 Analisi di Sensitività
+## 6.3 Analisi di Sensitività
 
 Vediamo come varia la soluzione al variare dei parametri:
 
@@ -1293,7 +1295,7 @@ Vincolo Rilassato:
 ---
 
 <a name="capitolo-7"></a>
-# Capitolo 7.4: Case Study Completi
+# Capitolo 7: Case Study Completi
 
 ## Case Study 1: Gamer Casual con Budget Limitato
 
@@ -1460,7 +1462,7 @@ Vincolo Rilassato:
 ---
 
 <a name="capitolo-8"></a>
-# Capitolo 8.7: Benchmark Comparativi
+# Capitolo 8: Benchmark Comparativi
 
 ## 8.7.1 Confronto con Sistemi Alternativi
 
@@ -1573,7 +1575,7 @@ Conclusione: Sistema robusto fino a 15% di incertezza
 ---
 
 <a name="capitolo-9"></a>
-# Capitolo 10: Best Practices e Linee Guida Operative
+# Capitolo 9: Best Practices e Linee Guida Operative
 
 ## 10.1 Deployment e Configurazione
 
@@ -1773,8 +1775,8 @@ def recalibrate_cpd(train_data, test_data):
 
 ---
 
-<a name="capitolo-11"></a>
-# Capitolo 11: Metriche Avanzate e KPI
+<a name="capitolo-10"></a>
+# Capitolo 10: Metriche Avanzate e KPI
 
 ## 11.1 Key Performance Indicators
 
@@ -1835,8 +1837,8 @@ Validity:         96/100 ✓
 
 ---
 
-<a name="capitolo-12"></a>
-# Capitolo 12: Roadmap Tecnica Dettagliata
+<a name="capitolo-11"></a>
+# Capitolo 11: Roadmap Tecnica Dettagliata
 
 ## 12.1 Q1 2025: Fase 1 - Real-time Integration
 
@@ -1956,7 +1958,329 @@ GET /api/v1/user/history/{user_id}
 
 ---
 
-# Appendice D: Formule Matematiche Dettagliate {#appendice-d}
+<a name="appendice-a"></a>
+# Appendice A: Specifiche Tecniche
+
+## A.1 Requisiti del Sistema
+
+### Hardware Minimo
+- **Processore:** CPU multi-core (minimo 4 core)
+- **Memoria RAM:** 4 GB minimo, 8 GB consigliati
+- **Storage:** 1 GB per il progetto + dataset
+- **Connessione:** Internet per il download dei dati
+
+### Hardware Consigliato
+- **Processore:** CPU 8+ core (Intel i7/Ryzen 7)
+- **Memoria RAM:** 16 GB
+- **Storage:** SSD NVMe per prestazioni ottimali
+- **GPU:** NVIDIA CUDA-capable (opzionale per accelerazione)
+
+## A.2 Dipendenze Software
+
+### Python 3.13+
+Librerie principali:
+```
+pandas==2.1.0          # Manipolazione dati
+numpy==1.24.0          # Operazioni numeriche
+scikit-learn==1.3.0    # Machine learning
+pyodide==0.24.0        # Inferenza Bayesiana
+constraint==1.4.0      # CSP Solver
+matplotlib==3.8.0      # Visualizzazione
+pytest==7.4.0          # Testing
+```
+
+### Installazione
+```bash
+pip install -r requirements.txt
+```
+
+## A.3 Struttura Directory del Progetto
+
+```
+gamelog/
+├── bayesian_learner.py      # Rete Bayesiana
+├── hardware_csp.py          # CSP Solver
+├── hardware_optimizer.py     # Ottimizzazione hardware
+├── logic_engine.py          # Engine logico
+├── main.py                  # Entry point
+├── data_loader.py           # Caricamento dati
+├── probabilita.py           # Calcoli probabilistici
+├── DOCUMENTAZIONE.md        # Questa documentazione
+├── README.md                # Guida rapida
+├── requirements.txt         # Dipendenze
+├── data/
+│   ├── steam.csv           # Dataset principale Steam
+│   └── steam_description_data.csv  # Descrizioni giochi
+└── tests/
+    ├── test_architettura.py    # Test architettura
+    └── test_prob.py            # Test probabilistico
+```
+
+## A.4 Configurazione Ambiente
+
+### Windows
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+### Linux/macOS
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+## A.5 Variabili di Ambiente
+
+```bash
+# Opzionale - percorso dataset custom
+GAMELOG_DATA_PATH=/path/to/data
+
+# Opzionale - verbosità logging
+GAMELOG_DEBUG=True
+
+# Opzionale - numero processi
+GAMELOG_NUM_WORKERS=4
+```
+
+---
+
+<a name="appendice-b"></a>
+# Appendice B: Guida all'Installazione
+
+## B.1 Installazione Passo-Passo
+
+### Passo 1: Clonare o Scaricare il Repository
+```bash
+git clone https://github.com/simone/gamelog.git
+cd gamelog
+```
+
+### Passo 2: Creare Ambiente Virtuale Python
+```bash
+# Windows
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+
+# Linux/macOS
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### Passo 3: Installare Dipendenze
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### Passo 4: Verificare Installazione
+```bash
+python main.py --test
+```
+
+## B.2 Download Dataset
+
+I dataset sono inclusi in `data/`:
+- `steam.csv` - Dataset principale (~60,000 righe)
+- `steam_description_data.csv` - Descrizioni (~50,000 righe)
+
+Se necessario scaricarli manualmente:
+```bash
+python data_loader.py --download
+```
+
+## B.3 Primo Utilizzo
+
+### Test del Sistema
+```bash
+# Eseguire test unitari
+pytest tests/ -v
+
+# Eseguire il programma principale
+python main.py
+
+# Specificare un genere
+python main.py --genre "Action"
+
+# Specificare un budget hardware
+python main.py --budget 1000
+```
+
+### Esempi di Comandi
+```bash
+# Trovare titoli di azione
+python main.py --genre Action --top 5
+
+# Ottimizzare hardware per 800€
+python main.py --hardware --budget 800 --currency EUR
+
+# Combinato: titoli + hardware
+python main.py --genre RPG --budget 1500 --all-recommendations
+```
+
+## B.4 Troubleshooting
+
+### Problema: "ModuleNotFoundError"
+```
+Soluzione: Verificare che venv sia attivo e dipendenze installate
+pip install -r requirements.txt
+```
+
+### Problema: "CSV file not found"
+```
+Soluzione: Verificare percorso data/ e file CSV
+python data_loader.py --validate
+```
+
+### Problema: "Insufficient memory"
+```
+Soluzione: Usare sampling dataset
+python main.py --sample 0.5
+```
+
+### Problema: Rete Bayesiana non converge
+```
+Soluzione: Aumentare iterazioni
+python main.py --bayesian-iterations 10000
+```
+
+## B.5 Configurazione Avanzata
+
+### Personalizzare Parametri di Learning
+Modificare in `bayesian_learner.py`:
+```python
+LEARNING_RATE = 0.01      # Velocità apprendimento
+MAX_ITERATIONS = 5000      # Massime iterazioni
+SMOOTHING_ALPHA = 1.0      # Laplace smoothing
+CONFIDENCE_LEVEL = 0.95    # Livello confidenza
+```
+
+### Configurare CSP Solver
+Modificare in `hardware_csp.py`:
+```python
+SEARCH_STRATEGY = "backtracking"  # O "arc_consistency"
+VARIABLE_HEURISTIC = "mrv"        # O "lcv"
+MAX_SOLUTIONS = 5                 # Numero soluzioni da trovare
+TIMEOUT_SECONDS = 10              # Timeout risolutore
+```
+
+## B.6 Performance Tuning
+
+### Ottimizzare per Velocità
+```bash
+python main.py --mode fast --cache enabled
+```
+
+### Ottimizzare per Precisione
+```bash
+python main.py --mode accurate --bayesian-iterations 20000
+```
+
+### Uso Memoria Limitata
+```bash
+python main.py --memory-efficient --batch-size 100
+```
+
+---
+
+<a name="appendice-c"></a>
+# Appendice C: Riferimenti Bibliografici
+
+## C.1 Letteratura Scientifica Fondamentale
+
+### Reti Bayesiane e Probabilità
+[1] Russell, S., Norvig, P. (2020). "Artificial Intelligence: A Modern Approach" (4th ed.). Prentice Hall.
+
+[2] Pearl, J. (2009). "Causality: Models, Reasoning, and Inference" (2nd ed.). Cambridge University Press.
+
+[3] Koller, D., Friedman, N. (2009). "Probabilistic Graphical Models: Principles and Techniques". MIT Press.
+
+[4] Murphy, K. P. (2012). "Machine Learning: A Probabilistic Perspective". MIT Press.
+
+### Constraint Satisfaction Problems
+[5] Dechter, R. (2003). "Constraint Processing". Morgan Kaufmann.
+
+[6] Apt, K. R. (2003). "Principles of Constraint Programming". Cambridge University Press.
+
+[7] Kumar, V. (1992). "Algorithms for Constraint Satisfaction Problems". IEEE Expert.
+
+### Sistemi di Raccomandazione
+[8] Ricci, F., Rokach, L., Shapira, B. (2015). "Recommender Systems Handbook" (2nd ed.). Springer.
+
+[9] Aggarwal, C. C. (2016). "Recommender Systems". Springer.
+
+### Ingegneria della Conoscenza
+[10] Studer, R., Benjamins, R., Fensel, D. (1998). "Knowledge Engineering: Principles and Methods". Data & Knowledge Engineering.
+
+[11] Giarratano, J., Riley, G. (2005). "Expert Systems: Principles and Programming" (4th ed.). Course Technology.
+
+## C.2 Dataset e Fonti
+
+- **SteamDB** (https://steamdb.info/) - Database Steam pubblico
+- **Steam Web API** (https://steamcommunity.com/dev) - API ufficiale Steam
+- **Kaggle Datasets** - Dataset Steam preprocessati
+- **GitHub Repositories** - Progetti similari di analisi Steam
+
+## C.3 Tools e Librerie Utilizzate
+
+### Librerie Python Specifiche
+
+[12] PyDOE - Design of Experiments
+https://github.com/tisimst/pyDOE
+
+[13] NetworkX - Graph Analysis
+https://networkx.org/
+
+[14] Optuna - Hyperparameter Optimization
+https://optuna.org/
+
+[15] SHAP - Model Explainability
+https://shap.readthedocs.io/
+
+### Framework di Constraint Programming
+
+[16] OR-Tools (Google)
+https://developers.google.com/optimization
+
+[17] Choco Solver
+https://choco-solver.org/
+
+[18] Gurobi Optimizer
+https://www.gurobi.com/
+
+## C.4 Articoli e Pubblicazioni Correlate
+
+**Recommendation Systems for Gaming:**
+- "Implicit Collaborative Filtering through Parameter Free Spectral Clustering" (2015)
+- "Temporal Dynamics of Preference Learning" (2018)
+
+**Hardware Optimization:**
+- "Multi-Objective Hardware Configuration Optimization" (2019)
+- "Price-Performance Tradeoffs in Component Selection" (2020)
+
+**Knowledge Representation:**
+- "Hybrid Approaches to Knowledge Representation" (2021)
+- "Integrating Symbolic and Probabilistic Methods" (2022)
+
+## C.5 Standards e Specifiche
+
+- **JSON Schema** - Validazione configurazioni
+- **OpenAPI 3.0** - Specifiche API REST
+- **YAML** - Configurazione applicazioni
+- **CSV** - Format dati tabellari standard
+
+## C.6 Documentazione Ufficiale Consultata
+
+- Python 3.13 Official Documentation
+- pandas Documentation (https://pandas.pydata.org/)
+- scikit-learn User Guide (https://scikit-learn.org/)
+- Pyodide Documentation (https://pyodide.org/)
+
+---
+
+# Appendice D: Formule Matematiche Dettagliate 
 
 ## Formule Utilizzate nel Progetto
 
