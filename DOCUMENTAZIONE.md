@@ -31,7 +31,7 @@
 
 ---
 
-# Capitolo 0: Introduzione e Obiettivi {#capitolo-0}
+# Capitolo 0: Introduzione e Obiettivi
 
 ## 0.1 Panoramica del Progetto
 
@@ -111,7 +111,7 @@ La presente documentazione è organizzata come segue:
 
 ---
 
-# Capitolo 1: Analisi del Problema e Requisiti {#capitolo-1}
+# Capitolo 1: Analisi del Problema e Requisiti
 
 ## 1.1 Analisi del Dominio
 
@@ -214,7 +214,7 @@ Il dominio applicativo è quello dei videogiochi su Steam e della selezione di h
 
 ---
 
-# Capitolo 2: Architettura del Sistema {#capitolo-2}
+# Capitolo 2: Architettura del Sistema
 
 ## 2.1 Architettura di Alto Livello
 
@@ -343,7 +343,7 @@ INPUT UTENTE
 
 ---
 
-# Capitolo 3: Dataset e Preprocessing {#capitolo-3}
+# Capitolo 3: Dataset e Preprocessing
 
 ## 3.1 Descrizione del Dataset
 
@@ -576,7 +576,7 @@ Categorizzazione per fascia:
 
 ---
 
-# Capitolo 4: Ragionamento Logico e Knowledge Base {#capitolo-4}
+# Capitolo 4: Ragionamento Logico e Knowledge Base
 
 ## 4.1 Fondamenti Teorici
 
@@ -811,7 +811,7 @@ Main → KB:
 
 ---
 
-# Capitolo 5: Ragionamento Probabilistico e Rete Bayesiana {#capitolo-5}
+# Capitolo 5: Ragionamento Probabilistico e Rete Bayesiana
 
 ## 5.1 Teoria delle Reti Bayesiane
 
@@ -1110,7 +1110,7 @@ VALIDAZIONE 3: Plausibilità Semantica
 
 ---
 
-# Capitolo 5.8: Estensioni della Rete Bayesiana {#capitolo-5-ext}
+# Capitolo 5.8: Estensioni della Rete Bayesiana
 
 ## 5.8.1 Integrazione di Variabili Temporali
 
@@ -1184,7 +1184,7 @@ Repeat until convergence
 
 ---
 
-# Capitolo 6.7: Analisi Avanzata del CSP {#capitolo-6-ext}
+# Capitolo 6.7: Analisi Avanzata del CSP
 
 ## 6.7.1 Teoria della Complessità e Treewidth
 
@@ -1284,7 +1284,7 @@ Vincolo Rilassato:
 
 ---
 
-# Capitolo 7.4: Case Study Completi {#capitolo-7-case}
+# Capitolo 7.4: Case Study Completi
 
 ## Case Study 1: Gamer Casual con Budget Limitato
 
@@ -1450,7 +1450,7 @@ Vincolo Rilassato:
 
 ---
 
-# Capitolo 8.7: Benchmark Comparativi {#capitolo-8-bench}
+# Capitolo 8.7: Benchmark Comparativi
 
 ## 8.7.1 Confronto con Sistemi Alternativi
 
@@ -1562,7 +1562,7 @@ Conclusione: Sistema robusto fino a 15% di incertezza
 
 ---
 
-# Capitolo 10: Best Practices e Linee Guida Operative {#capitolo-10}
+# Capitolo 10: Best Practices e Linee Guida Operative
 
 ## 10.1 Deployment e Configurazione
 
@@ -1762,7 +1762,7 @@ def recalibrate_cpd(train_data, test_data):
 
 ---
 
-# Capitolo 11: Metriche Avanzate e KPI {#capitolo-11}
+# Capitolo 11: Metriche Avanzate e KPI
 
 ## 11.1 Key Performance Indicators
 
@@ -1823,7 +1823,7 @@ Validity:         96/100 ✓
 
 ---
 
-# Capitolo 12: Roadmap Tecnica Dettagliata {#capitolo-12}
+# Capitolo 12: Roadmap Tecnica Dettagliata
 
 ## 12.1 Q1 2025: Fase 1 - Real-time Integration
 
@@ -2032,28 +2032,3 @@ dove:
 
 ---
 
-## Fine della Documentazione Estesa
-
-Questa documentazione comprensiva copre tutti gli aspetti tecnici, implementativi, sperimentali e operativi del sistema GAMELOG, dalle fondamenta teoriche alla deployment in produzione.
-
-**Pagine totali:** ~35-40 pagine  
-**Versione:** 2.0  
-**Data:** Febbraio 2026  
-**Status:** COMPLETA E VALIDATA
-
----
-
-### Statistica della Documentazione
-
-| Metrica | Valore |
-|---|---|
-| Numero capitoli | 12 + 5 appendici |
-| Numero sezioni | 87 |
-| Numero subsection | 234 |
-| Numero tabelle | 45 |
-| Numero formule matematiche | 18 |
-| Numero case study | 2 completi |
-| Numero diagrammi | 32 |
-| Numero codice snippet | 56 |
-| Numero metriche benchmark | 125+ |
-| Lunghezza totale | ~35-40 pagine |
