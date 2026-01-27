@@ -4,6 +4,8 @@ from pgmpy.inference import VariableElimination
 from sklearn.preprocessing import LabelEncoder
 import data_loader
 import pandas as pd
+import logging
+logging.getLogger("pgmpy").setLevel(logging.ERROR)
 
 # Creiamo un encoder globale per ricordarci a quale numero corrisponde ogni genere
 encoder = LabelEncoder()

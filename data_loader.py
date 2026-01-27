@@ -15,6 +15,7 @@ def get_clean_data():
         
         # Trasformiamo le stringhe in liste
         df['genres_list'] = df['genres'].apply(lambda x: x.split(';'))
+        df['genres_list'] = df['genres_list'].apply(lambda lista: [g.lower() for g in lista])
         df['cat_list'] = df['categories'].apply(lambda x: x.split(';'))
         
         # Metrica di successo

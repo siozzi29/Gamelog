@@ -1,32 +1,55 @@
-import pandas as pd
-from pyDatalog import pyDatalog
+import data_loader
+import bayesian_learner
+import logic_engine
+import hardware_optimizer
 
-# 1. Caricamento dati
-df = pd.read_csv('data/steam.csv')
+def main():
+    print("="*30)
+    print(" STEAM AI ADVISOR - STARTUP ")
+    print("="*30)
 
-# 2. Definizione termini logici
-# is_genre(Gioco, Genere), has_category(Gioco, Categoria), competitive_core(Gioco)
-pyDatalog.create_terms('is_genre, has_category, competitive_core, X, Y')
-
-print("--- Popolamento Knowledge Base ---")
-
-# Carichiamo i primi 50 giochi per avere più varietà
-for index, row in df.head(50).iterrows():
-    gioco = row['name']
+    # 1. Caricamento Iniziale
+    print("\n[1/3] Inizializzazione Knowledge Base...")
+    logic_engine.setup_logic()
     
-    # Aggiungiamo i generi
-    for g in row['genres'].split(';'):
-        + is_genre(gioco, g)
-    
-    # Aggiungiamo le categorie (es. Multi-player, Single-player)
-    for c in row['categories'].split(';'):
-        + has_category(gioco, c)
+    # 2. Input Utente
+    genere = input("\nInserisci un genere di gioco (es. Action, Indie, RPG): ").strip()
+    budget = float(input("Inserisci il tuo budget per l'hardware (€): "))
 
-# 3. DEFINIZIONE DELLA REGOLA (Ragionamento)
-# Un gioco X è competitive_core se è Action E è Multi-player
-competitive_core(X) <= is_genre(X, 'Action') & has_category(X, 'Multi-player')
+    print("\n" + "="*30)
+    print(f" ANALISI PER IL GENERE: {genere} ")
+    print("="*30)
 
-# 4. QUERY
-print("\n--- Risultati del Ragionamento ---")
-risultati = competitive_core(X)
-print(f"Giochi identificati come 'Competitive-Core':\n{risultati}")
+    # 3. Ragionamento Probabilistico (Incertezza)
+    print("\n--- Previsione Successo (Rete Bayesiana) ---")
+    prob = bayesian_learner.predict_success(genere)
+    print(prob)
+
+    # 4. Ragionamento Deduttivo (Logica)
+    print(f"\n--- Titoli Consigliati (Knowledge Base) ---")
+    successi_logici = logic_engine.query_custom_genre(genere)
+    if successi_logici:
+        # Estraiamo i primi 5 nomi dai risultati della query
+        nomi = [r[0] for r in successi_logici[:5]]
+        print(f"Ecco 5 titoli di successo nel mercato {genere}:")
+        for n in nomi:
+            print(f" - {n}")
+    else:
+        print(f"⚠️ Nessun titolo trovato per il genere '{genere}'.")
+
+    # 5. Ottimizzazione (Vincoli)
+    print(f"\n--- Ottimizzazione Hardware (CSP) ---")
+    configurazioni = hardware_optimizer.find_hardware_configs(budget)
+    if configurazioni:
+        print(f"Con {budget}€ puoi acquistare:")
+        for c in configurazioni[:3]: # Mostriamo le prime 3
+            print(f" ✅ {c}")
+    else:
+        print("⚠️ Nessuna configurazione trovata per questo budget.")
+
+    print("\n" + "="*30)
+    print(" FINE ANALISI ")
+    print("="*30)
+
+if __name__ == "__main__":
+    main()

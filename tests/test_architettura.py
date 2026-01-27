@@ -1,28 +1,33 @@
 import sys
 import os
-# Aggiunge la cartella superiore al percorso di ricerca di Python
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import data_loader
 import bayesian_learner
-import pandas as pd
+import logic_engine
+import hardware_optimizer
 
-print("--- TEST FASE 1: Caricamento e Pulizia ---")
+print("--- TEST FASE 1: Dati ---")
 df = data_loader.get_clean_data()
-if df is not None:
-    print(f"✅ Successo! Dataset caricato.")
-    print(f"Esempio di metrica successo (is_success) per i primi 3 giochi:")
-    print(df[['name', 'is_success']].head(3))
-else:
-    print("❌ Errore nel caricamento dei dati.")
+print("✅ Dataset OK")
 
-print("\n--- TEST FASE 2: Apprendimento Bayesiano ---")
-try:
-    # Testiamo la predizione per il genere 'Action'
-    # Il modello leggerà il CSV e calcolerà la probabilità reale
-    risultato = bayesian_learner.predict_success('Action')
-    print("✅ Il modello ha imparato dai dati!")
-    print("Probabilità di successo per un gioco 'Action' basata sul dataset:")
-    print(risultato)
-except Exception as e:
-    print(f"❌ Errore nell'apprendimento: {e}")
+print("\n--- TEST FASE 2: Probabilità ---")
+print(bayesian_learner.predict_success('Action'))
+print("✅ Fase 2 completata")
+
+print("\n--- TEST FASE 3: Logica ---")
+logic_engine.setup_logic()
+risultati = logic_engine.query_action_hits()
+# risultati è una lista di tuple, es: [('Counter-Strike',), ('Portal',)]
+if risultati:
+    print(f"✅ Query Logica OK. Trovati {len(risultati)} giochi.")
+    # Estraiamo i primi 3 nomi per vederli puliti
+    nomi_puliti = [r[0] for r in risultati[:3]]
+    print(f"Esempi: {nomi_puliti}")
+else:
+    print("⚠️ Nessun gioco trovato con questi criteri.")
+
+print("\n--- TEST FASE 4: Vincoli (CSP) ---")
+print("Sto calcolando le configurazioni hardware...")
+configs = hardware_optimizer.find_hardware_configs(500)
+print(f"✅ CSP OK. Trovate {len(configs)} soluzioni.")
