@@ -31,7 +31,7 @@
 
 ---
 
-# Capitolo 0: Introduzione e Obiettivi {#capitolo-0}
+<a name="capitolo-0"></a>
 
 ## 0.1 Panoramica del Progetto
 
@@ -111,7 +111,8 @@ La presente documentazione è organizzata come segue:
 
 ---
 
-# Capitolo 1: Analisi del Problema e Requisiti {#capitolo-1}
+<a name="capitolo-1"></a>
+
 
 ## 1.1 Analisi del Dominio
 
@@ -214,7 +215,7 @@ Il dominio applicativo è quello dei videogiochi su Steam e della selezione di h
 
 ---
 
-# Capitolo 2: Architettura del Sistema {#capitolo-2}
+<a name="capitolo-2"></a>
 
 ## 2.1 Architettura di Alto Livello
 
