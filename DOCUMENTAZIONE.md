@@ -2279,7 +2279,6 @@ https://www.gurobi.com/
 - Pyodide Documentation (https://pyodide.org/)
 
 ---
-
 # Appendice D: Formule Matematiche Dettagliate 
 
 ## Formule Utilizzate nel Progetto
