@@ -1239,7 +1239,7 @@ Possibili estensioni del modello:
 <a name="capitolo-8"></a>
 # Capitolo 8: Benchmark Comparativi
 
-## 8.7.1 Confronto con Sistemi Alternativi
+## 8.1 Confronto con Sistemi Alternativi
 
 Abbiamo confrontato GAMELOG con approcci tradizionali:
 
@@ -1299,7 +1299,7 @@ Vantaggi:
 | Costo | €0 | €/richiesta | €/richiesta |
 | User Satisfaction | 72% | 68% | 94% |
 
-## 8.7.2 Stress Testing
+## 8.2 Stress Testing
 
 ### Test 1: Carico Concorrente
 
@@ -1372,10 +1372,10 @@ xychart-beta
 ---
 
 <a name="capitolo-9"></a>
-# Capitolo 9: Best Practices e Linee Guida Operative
 <a name="capitolo-9"></a>
+# Capitolo 9: Best Practices e Linee Guida Operative
 
-## 10.1 Deployment e Configurazione
+## 9.1 Deployment e Configurazione
 
 ### Setup Ottimale per Produzione
 
@@ -1456,7 +1456,7 @@ logging_config = {
 }
 ```
 
-## 10.2 Manutenzione del Dataset
+## 9.2 Manutenzione del Dataset
 
 ### Procedura di Aggiornamento
 
@@ -1515,7 +1515,7 @@ def detect_anomalies(new_data, historical_stats, threshold=3.0):
     return anomalies
 ```
 
-## 10.3 Troubleshooting Guide
+## 9.3 Troubleshooting Guide
 
 ### Problema: Query Knowledge Base timeout (> 500ms)
 
@@ -1557,7 +1557,7 @@ GAMELOG integra con successo tre paradigmi di ragionamento (logica, probabilità
 <a name="capitolo-10"></a>
 # Capitolo 10: Metriche Avanzate e KPI
 
-## 11.1 Key Performance Indicators
+## 10.1 Key Performance Indicators
 
 ### Sistema Metrics
 
@@ -1589,7 +1589,7 @@ Re-engagement Rate: 64%
   - Average queries per user: 2.3
 ```
 
-## 11.2 Metriche di Qualità del Dataset
+## 10.2 Metriche di Qualità del Dataset
 
 ```
 Dataset Health Score: 94/100
@@ -1617,8 +1617,8 @@ Validity:         96/100 ✓
 ---
 
 <a name="capitolo-11"></a>
-# Capitolo 11: Roadmap Tecnica Dettagliata
 <a name="capitolo-11"></a>
+# Capitolo 11: Roadmap Tecnica Dettagliata
 
 ## Timeline e Milestone Principali
 
@@ -1729,7 +1729,6 @@ GAMELOG_NUM_WORKERS=4
 
 <a name="appendice-b"></a>
 # Appendice B: Guida all'Installazione
-<a name="appendice-b"></a>
 
 ## B.1 Installazione Rapida
 
@@ -1853,7 +1852,6 @@ dove:
 
 <a name="appendice-e"></a>
 # Appendice E: Glossario Tecnico 
-<a name="appendice-e"></a>
 
 **Bayesian Network:** Grafo orientato aciclico che rappresenta dipendenze probabilistiche
 
