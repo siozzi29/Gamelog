@@ -1,147 +1,49 @@
 # GAMELOG
 ## Sistema Intelligente di Raccomandazione Videogiochi e Hardware
-### Documentazione Tecnica Completa
 
----
+**Autore:** Simone Iozzi | **Corso:** Ingegneria della Conoscenza | **A.A.:** 2024-2025
 
-**Autore:** Simone Iozzi, 796970, s.iozzi@studenti.uniba.it  
-**A.A.:** 2024-2025  
-**Corso:** Ingegneria della Conoscenza  
-**Università:** Università degli Studi di Bari Aldo Moro
+## Indice
 
----
-
-## Indice Generale
-
-- [Capitolo 0: Introduzione e Obiettivi](#capitolo-0)
-- [Capitolo 1: Analisi del Problema e Requisiti](#capitolo-1)
-- [Capitolo 2: Architettura del Sistema](#capitolo-2)
+- [Capitolo 0: Introduzione](#capitolo-0)
+- [Capitolo 1: Analisi e Requisiti](#capitolo-1)
+- [Capitolo 2: Architettura](#capitolo-2)
 - [Capitolo 3: Dataset e Preprocessing](#capitolo-3)
-- [Capitolo 4: Ragionamento Logico e Knowledge Base](#capitolo-4)
-- [Capitolo 5: Ragionamento Probabilistico e Rete Bayesiana](#capitolo-5)
-- [Capitolo 6: Constraint Satisfaction Problem (CSP)](#capitolo-6)
-- [Capitolo 7: Integrazione dei Moduli](#capitolo-7)
-- [Capitolo 8: Risultati Sperimentali e Valutazione](#capitolo-8)
-- [Capitolo 9: Sviluppi Futuri e Conclusioni](#capitolo-9)
-- [Capitolo 10: Metriche Avanzate e KPI](#capitolo-10)
-- [Capitolo 11: Roadmap Tecnica Dettagliata](#capitolo-11)
-- [Appendice A: Specifiche Tecniche](#appendice-a)
-- [Appendice B: Guida all'Installazione](#appendice-b)
-- [Appendice C: Riferimenti Bibliografici](#appendice-c)
-- [Appendice D: Formule Matematiche Dettagliate](#appendice-d)
-- [Appendice E: Glossario Tecnico](#appendice-e)
+- [Capitolo 4: Ragionamento Logico](#capitolo-4)
+- [Capitolo 5: Rete Bayesiana](#capitolo-5)
+- [Capitolo 6: CSP](#capitolo-6)
+- [Capitolo 7: Case Study](#capitolo-7)
+- [Capitolo 8: Benchmark e Metriche](#capitolo-8)
+- [Capitolo 9: Deployment e Manutenzione](#capitolo-9)
 
 ---
 
 <a name="capitolo-0"></a>
-# Capitolo 0: Introduzione e Obiettivi
+# Capitolo 0: Introduzione
 
-## 0.1 Panoramica del Progetto
+## Panoramica
 
-L'Ingegneria della Conoscenza è una disciplina che si propone di rappresentare e gestire la conoscenza umana attraverso sistemi computazionali sofisticati. Il progetto GAMELOG rappresenta un'applicazione pratica di questa disciplina, integrando tre paradigmi fondamentali:
+GAMELOG integra tre paradigmi di ragionamento per fornire raccomandazioni personalizzate:
+- **Ragionamento Logico Deduttivo:** Knowledge Base con regole certe
+- **Ragionamento Probabilistico:** Rete Bayesiana per gestire incertezza
+- **Ottimizzazione:** CSP Solver per trovare configurazioni hardware ottimali
 
-1. **Ragionamento Logico Deduttivo**
-2. **Ragionamento Probabilistico**
-3. **Ottimizzazione con Vincoli (CSP)**
+## Motivazione
 
-L'obiettivo principale è sviluppare un sistema intelligente che fornisca raccomandazioni personalizzate per la selezione di videogiochi e configurazioni hardware, integrando molteplici forme di ragionamento per produrre risultati affidabili e ben fondate.
+Il mercato di Steam conta 27.000+ titoli. Gli utenti affrontano scelte difficili in merito a:
+- Selezione del genere più adatto
+- Configurazione hardware necessaria
+- Titoli di maggior successo in un segmento
 
-## 0.2 Motivazione e Contesto
+Le raccomandazioni attuali mancano di trasparenza, integrazione di conoscenza strutturata e gestione sofisticata dell'incertezza. GAMELOG risolve questi problemi.
 
-Il mercato dei videogiochi su Steam conta più di 27.000 titoli, con una crescita continua. Un utente generico si trova di fronte a una scelta difficile:
+## Contributi Principali
 
-- Come scegliere il genere più adatto alle proprie preferenze?
-- Quale configurazione hardware è necessaria per un genere specifico?
-- Quali sono i titoli di maggior successo in un determinato segmento?
-
-Le raccomandazioni attuali basate su algoritmi puramente statistici spesso mancano di:
-- Trasparenza nel ragionamento
-- Integrazione di conoscenza strutturata
-- Gestione dell'incertezza in modo sofisticato
-- Ottimizzazione multi-obbiettivo
-
-Il progetto GAMELOG risolve questi problemi integrando:
-- Una **Knowledge Base** che racchiude regole logiche sul dominio
-- Una **Rete Bayesiana** che gestisce l'incertezza probabilistica
-- Un **CSP Solver** che trova soluzioni ottimali rispetto a vincoli multipli
-
-## 0.3 Metodologia di Sviluppo
-
-Il progetto segue una metodologia scientifica rigorosa:
-
-### FASE 1: Analisi dei Requisiti
-- Identificazione di input/output
-- Definizione dei paradigmi di ragionamento
-- Specifica dei vincoli e obiettivi
-
-### FASE 2: Progettazione Architetturale
-- Design modulare del sistema
-- Definizione delle interfacce tra componenti
-- Scelta delle librerie e tecnologie
-
-### FASE 3: Implementazione
-- Sviluppo dei moduli di ragionamento
-- Integrazione del flusso di esecuzione
-- Test unitari e di integrazione
-
-### FASE 4: Valutazione Sperimentale
-- Test su dataset reali
-- Misurazione delle prestazioni
-- Analisi dei risultati
-
-## 0.4 Contributi Principali
-
-Il sistema GAMELOG fornisce i seguenti contributi innovativi:
-
-| # | Contributo | Descrizione |
-|---|---|---|
-| 1 | Integrazione Multi-paradigma | Combinazione sinergica di tre diverse forme di ragionamento |
-| 2 | Trasparenza | Sistema che spiega le decisioni prese |
-| 3 | Scalabilità | Gestione di migliaia di titoli e configurazioni |
-| 4 | Robustezza | Gestione di incertezza e dati mancanti |
-| 5 | Usabilità | Interfaccia intuitiva per gli utenti finali |
-
-## 0.5 Diagramma dei Paradigmi di Ragionamento Integrati
-
-```mermaid
-graph LR
-    subgraph "GAMELOG Architecture"
-        Input["🎮 User Input<br/>(Genre + Budget)"]
-        
-        Logic["⚡ Logica Deduttiva<br/>Knowledge Base<br/>- Query di fatto<br/>- Regole certe"]
-        
-        Prob["📊 Ragionamento Probabilistico<br/>Rete Bayesiana<br/>- Incertezza<br/>- Confidenza"]
-        
-        CSP["🔧 Ottimizzazione Vincoli<br/>CSP Solver<br/>- Hardware compatibile<br/>- Ranking multi-criterio"]
-        
-        Output["🏆 Output Finale<br/>(Titoli + Probabilità<br/>+ Config Hardware)"]
-        
-        Input --> Logic
-        Input --> Prob
-        Input --> CSP
-        
-        Logic --> Output
-        Prob --> Output
-        CSP --> Output
-    end
-    
-    style Logic fill:#7ED321,stroke:#4A8A1A,color:#000
-    style Prob fill:#F5A623,stroke:#C67E0E,color:#000
-    style CSP fill:#BD10E0,stroke:#7A0A7A,color:#fff
-    style Output fill:#50E3C2,stroke:#2A8B7B,color:#000
-    style Input fill:#4A90E2,stroke:#2E5C8A,color:#fff
-```
-
-## 0.5 Struttura del Documento
-
-La presente documentazione è organizzata come segue:
-
-- **Capitoli 1-2:** Analisi del problema e architettura generale
-- **Capitoli 3-6:** Descrizione dei singoli moduli e paradigmi
-- **Capitolo 7:** Integrazione e flusso di esecuzione
-- **Capitolo 8:** Risultati sperimentali
-- **Capitolo 9:** Conclusioni e sviluppi futuri
-- **Appendici:** Specifiche tecniche e guide operative
+1. **Integrazione Multi-paradigma:** Combinazione sinergica di tre forme di ragionamento
+2. **Trasparenza:** Sistema che spiega le decisioni prese
+3. **Scalabilità:** Gestione di migliaia di titoli e configurazioni
+4. **Robustezza:** Gestione di incertezza e dati mancanti
+5. **Usabilità:** Interfaccia intuitiva
 
 ---
 
