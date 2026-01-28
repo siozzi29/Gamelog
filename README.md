@@ -52,8 +52,8 @@ Un'applicazione Python che combina **logica deduttiva**, **ragionamento probabil
 
 ### 1. Clonare il repository
 ```bash
-git clone https://github.com/username/steam-ai-advisor.git
-cd steam-ai-advisor
+git clone https://github.com/siozzi29/gamelog.git
+cd gamelog
 ```
 
 ### 2. Installare le dipendenze
@@ -91,7 +91,7 @@ python main.py
 **Esempio di interazione:**
 ```
 ==============================
- STEAM AI ADVISOR - STARTUP 
+ GAMELOG - STARTUP 
 ==============================
 
 [1/3] Inizializzazione Knowledge Base...
