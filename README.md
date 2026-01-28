@@ -22,6 +22,7 @@ Progetto individuale per l'esame di **Ingegneria della Conoscenza (ICon)** - Uni
 * `📁 src/`: Codice sorgente (Python/Prolog).
 * `📁 doc/`: Documentazione ufficiale (Template Word/PDF).
 * `📁 notebooks/`: Sperimentazione e valutazione statistica.
+* `📁 img/`: file immagini.
 
 ---
 
