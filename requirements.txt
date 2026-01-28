@@ -3,4 +3,3 @@ pyDatalog
 pgmpy
 python-constraint
 scikit-learn
-python-constraint
