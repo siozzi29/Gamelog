@@ -247,8 +247,8 @@ scikit-learn >= 1.0
 
 ## Autori
 
-Simone Iozzi 796970
-Sviluppato come progetto di **Ingegneria della Conoscenza**
+Simone Iozzi, 796970.
+Sviluppato come progetto di **Ingegneria della Conoscenza**.
 
 ---
 
