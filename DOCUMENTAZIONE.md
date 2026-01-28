@@ -614,77 +614,12 @@ Categorizzazione per fascia:
 
 ## 3.6 Statistiche Post-Preprocessing
 
-### DISTRIBUZIONE RATING
-- **Mean:** 6.82/10
-- **Median:** 7.1/10
-- **Std Dev:** 1.45
-- **Min/Max:** 1.0 - 10.0
 
-### DISTRIBUZIONE PREZZO
-- **Mean:** €12.45
-- **Median:** €9.99
-- **Std Dev:** €18.32
-- **Min/Max:** €0.00 - €99.99
+### Distribuzione Dataset Post-Preprocessing
 
-### Grafici Statistici Principali
-
-#### Grafico 1: Distribuzione Titoli e Rating Medio per Genere (Top 10)
-
-```mermaid
-xychart-beta
-    title "Distribuzione Titoli per Genere (Top 10)"
-    x-axis [Action, Indie, Adventure, Casual, RPG, Strategy, Simulation, Puzzle, Sports, Utils]
-    y-axis "Numero Titoli" 0 --> 3500
-    line [3240, 2987, 2145, 1897, 1654, 1320, 1105, 985, 847, 756]
-```
-
-#### Grafico 2: Rating Medio per Genere
-
-```mermaid
-xychart-beta
-    title "Rating Medio per Genere (Ordinato)"
-    x-axis [Strategy, RPG, Adventure, Action, Simulation, Indie, Casual, Sports, Puzzle, Utils]
-    y-axis "Rating Medio" 0 --> 10
-    bar [7.85, 7.62, 7.45, 7.23, 7.15, 6.95, 6.42, 6.18, 6.05, 5.82]
-```
-
-#### Grafico 3: Price Tier Distribution (Distribuzione Fasce di Prezzo)
-
-```mermaid
-pie title "Distribuzione Fasce di Prezzo dei Titoli"
-    "Budget (€0-€10): 45.2%" : 45.2
-    "Economy (€10-€30): 38.7%" : 38.7
-    "Standard (€30-€60): 12.1%" : 12.1
-    "Premium (€60+): 4.0%" : 4.0
-```
-
-### COMPLETEZZA FEATURE
-
-| Feature | Complete | Completeness |
-|---|---|---|
-| name | 24.645 | 100% |
-| rating | 24.645 | 100% |
-| review_count | 24.645 | 100% |
-| price | 24.587 | 99.8% |
-| genres | 24.645 | 100% |
-| developers | 24.213 | 98.2% |
-| release_date | 24.534 | 99.5% |
-| median_hours | 20.834 | 84.5% |
-
-## 3.7 Gestione della Memoria e Storage
-
-### UTILIZZO MEMORIA (IN MEMORY)
-- Raw CSV: 145 MB
-- Parsed DataFrame: 1.2 GB
-- Preprocessed Dataset: 800 MB
-- Indici e Cache: 200 MB
-- **TOTALE:** ~2.2 GB
-
-### STRATEGIE DI OTTIMIZZAZIONE
-1. **Chunk Loading:** Caricamento per batch se necessario
-2. **Data Type Optimization:** Utilizzo di categoria per generi
-3. **Index Creation:** Indici per query rapide
-4. **Lazy Loading:** Caricamento on-demand di descrizioni
+**Completezza:** Campi critici 99.8-100%, opzionali 84.5%
+**Memoria:** ~2.2 GB (Raw 145MB + DataFrame 1.2GB + Cache 200MB)
+**Ottimizzazione:** Chunk loading, type optimization, lazy loading
 
 ---
 
@@ -1211,254 +1146,77 @@ VALIDAZIONE 3: Plausibilità Semantica
 ---
 
 <a name="capitolo-5-8"></a>
-# Capitolo 5.8: Estensioni della Rete Bayesiana
+# Capitolo 5.8: Estensioni Future della Rete Bayesiana
 
-## 5.8.1 Integrazione di Variabili Temporali
-
-Una possibile estensione del modello è l'introduzione di variabili temporali per tracciare come il successo di un genere cambia nel tempo:
-
-### Modello Temporale Dinamico
-
-```
-Time(t)
-  ↓
-Genre(t) → Quality(t) → Success(t)
-  ↓          ↓
-Success(t-1) Popularity(t)
-```
-
-**Variabile Aggiuntiva:** `Time_Period`
-- Valori: {Q1_2023, Q2_2023, Q3_2023, Q4_2023, Q1_2024, ...}
-- Parents: Success(t-1)
-- Significato: Trend temporale nel successo
-
-**Applicazioni:**
-- Predire generi emergenti
-- Identificare cali di popolarità
-- Pianificazione di rilasci futuri
-
-### Apprendimento dei Parametri Temporali
-
-```python
-# Pseudocodice per temporal CPD
-def learn_temporal_cpd(data, genre, time_windows):
-    cpd_temporal = {}
-    
-    for i, window in enumerate(time_windows):
-        # Filtra dati nel time window
-        data_window = data[data['timestamp'].isin(window)]
-        
-        # Calcola probabilità condizionate
-        for success_prev in [True, False]:
-            for success_curr in [True, False]:
-                count = len(data_window[
-                    (data_window['success_prev'] == success_prev) &
-                    (data_window['success_curr'] == success_curr)
-                ])
-                cpd_temporal[(success_prev, success_curr)] = count / len(data_window)
-    
-    return cpd_temporal
-```
-
-## 5.8.2 Variabili Latenti e EM Algorithm
-
-Per scoprire fattori nascosti che influenzano il successo, possiamo introdurre variabili latenti:
-
-**Variabili Latenti Proposte:**
-1. **Gameplay_Innovation**: Livello di innovazione meccanica
-2. **Community_Engagement**: Coinvolgimento della community
-3. **Marketing_Impact**: Effetto della campagna marketing
-
-**Algoritmo EM (Expectation-Maximization):**
-
-```
-Step 1: E-Step (Expectation)
-  Calcola P(LatentVar | ObservedVar, θ_current)
-  
-Step 2: M-Step (Maximization)
-  Aggiorna θ = argmax E[log P(ObservedVar, LatentVar | θ)]
-  
-Repeat until convergence
-```
-
-**Convergenza:** Tipicamente 50-100 iterazioni per questo dataset
+Possibili estensioni del modello:
+- **Modelli Temporali Dinamici:** Tracking dei trend di successo nel tempo
+- **Variabili Latenti:** Fattori nascosti (innovazione gameplay, marketing impact)
+- **Algoritmo EM:** Apprendimento parametri con expectation-maximization
 
 ---
 
 <a name="capitolo-6"></a>
 # Capitolo 6: Analisi Avanzata del CSP
 
-## 6.1 Teoria della Complessità e Treewidth
+## 6.1 Complessità Computazionale
 
-### Analisi della Complessità del Nostro CSP
-
-La complessità del problema dipende dalla **treewidth** della constraint graph:
-
-```
-Constraint Graph:
-    CPU ---- RAM
-     |    ×   |
-     |   / \  |
-    GPU      SSD
-     |      /
-     PSU ---
-```
-
-**Proprietà del Grafo:**
-- **Numero di nodi:** 5 (CPU, GPU, RAM, SSD, PSU)
-- **Numero di archi:** 6
-- **Densità:** 0.6 (6/10)
-- **Treewidth stimato:** 3
-
-**Implicazioni per la Complessità:**
-
-Per un CSP con treewidth `w`:
-- **Time Complexity:** O(n × k^(w+1) × p)
-  - n = numero variabili (5)
-  - k = dominio massimo (45 per CPU)
-  - p = numero vincoli (5)
-  - **Risultato:** O(5 × 45³ × 5) ≈ O(22,968,750) nel worst case
-  - **Pratica con forward checking:** ~10,000-50,000 operazioni
-
-### Decomposizione dell'Albero e Constraint Graph
-
-```mermaid
-graph TD
-    CPU["💻 CPU<br/>AMD/Intel"]
-    RAM["🧠 RAM<br/>DDR4/DDR5"]
-    GPU["🎨 GPU<br/>NVIDIA/AMD"]
-    SSD["💾 SSD<br/>NVMe"]
-    PSU["⚡ PSU<br/>750W+"]
-    
-    CPU -- Socket --> RAM
-    CPU -- Power --> PSU
-    GPU -- Power --> PSU
-    GPU -- Memory Bus --> RAM
-    SSD -- Interface --> RAM
-    
-    style CPU fill:#E3F2FD,stroke:#1976D2
-    style RAM fill:#F3E5F5,stroke:#7B1FA2
-    style GPU fill:#FCE4EC,stroke:#C2185B
-    style SSD fill:#E0F2F1,stroke:#00796B
-    style PSU fill:#FFF3E0,stroke:#E65100
-```
-
-Questa decomposizione riduce lo spazio di ricerca mediante dynamic programming.
+**Constraint Graph:** 5 nodi (CPU, GPU, RAM, SSD, PSU), 6 archi, treewidth=3
+**Complessità:** Worst case teorico O(22.968.750), pratica 10K-50K operazioni con forward checking
 
 ## 6.2 Soft Constraints e Ottimizzazione
 
-Oltre ai vincoli hard (must-satisfy), abbiamo soft constraints (preferenze):
+| Constraint | Peso | Funzione |
+|------------|------|----------|
+| Prezzo min | 0.3 | price/budget |
+| Performance max | 0.4 | 1-(perf/max) |
+| Brand pref | 0.2 | mismatch |
+| Rumore | 0.1 | noise/100 |
 
-| Soft Constraint | Peso | Funzione di Costo |
-|---|---|---|
-| Minimizzare prezzo | 0.3 | `cost = price_total / budget` |
-| Massimizzare performance | 0.4 | `cost = 1 - (perf / max_perf)` |
-| Preferenze stilistiche | 0.2 | `cost = 1 if brand_mismatch else 0` |
-| Rumorosità | 0.1 | `cost = noise_level / 100` |
+**Funzione Obiettivo:** total_cost = Σ wᵢ × cᵢ
 
-**Funzione Obiettivo Multi-Peso:**
+## 6.3 Sensibilità al Budget
 
-$$\text{total\_cost} = \sum_i w_i \times c_i$$
+| Budget (€) | # Soluzioni | Performance Range |
+|-----------|-------------|------------------|
+| 500 | 2 | 5.2-6.8 |
+| 800 | 8 | 6.8-8.1 |
+| 1200 | 12 | 7.5-8.7 |
+| 1800 | 18 | 8.5-9.5 |
+| 2500 | 25 | 9.0-9.8 |
 
-$$\text{best\_config} = \underset{c \in \text{valid}}{\arg\min} \text{total\_cost}(c)$$
-
-## 6.3 Analisi di Sensitività
-
-Vediamo come varia la soluzione al variare dei parametri:
-
-### Variazione del Budget
-
-| Budget (€) | # Soluzioni | Perf Range | Price Range |
-|---|---|---|---|
-| 500 | 2 | 5.2-6.8 | €485-€499 |
-| 800 | 8 | 6.8-8.1 | €750-€799 |
-| 1200 | 12 | 7.5-8.7 | €1150-€1195 |
-| 1800 | 18 | 8.5-9.5 | €1750-€1795 |
-| 2500 | 25 | 9.0-9.8 | €2400-€2495 |
-
-### Grafico: Variazione Soluzioni e Performance al Variare del Budget
-
-```mermaid
-xychart-beta
-    title CSP - Numero di Soluzioni vs Budget
-    x-axis [500, 800, 1200, 1800, 2500]
-    y-axis "Soluzioni" 0 --> 30
-    line [2, 8, 12, 18, 25]
-```
-
-### Grafico: Performance Range al Variare del Budget
-
-```mermaid
-xychart-beta
-    title CSP - Performance Range per Budget
-    x-axis [500, 800, 1200, 1800, 2500]
-    y-axis "Score" 0 --> 10
-    line "Min" [5.2, 6.8, 7.5, 8.5, 9.0]
-    line "Max" [6.8, 8.1, 8.7, 9.5, 9.8]
-```
-
-**Insights:**
-- Ritorni decrescenti dopo €1800 (plateau di performance)
-- Maggiore scelta di variabilità tra €800-€1200
-- Configurazioni di fascia bassa molto vincolate
-
-### Variazione dei Vincoli di Compatibilità
-
-Se rilassiamo il vincolo DDR5-only per Socket AM5:
-
-```
-Vincolo Rigido:
-  - Solutions: 12 per budget €1200
-  - Time: 289ms
-
-Vincolo Rilassato:
-  - Solutions: 18 per budget €1200
-  - Time: 412ms
-  - Aumento: 50% soluzioni, +42% tempo
-```
+**Insight:** Ritorni decrescenti dopo €1800 (performance plateau). Maggiore varietà di scelta tra €800-€1200.
 
 ---
 
 <a name="capitolo-7"></a>
 # Capitolo 7: Case Study Completi
 
-## Case Study 1: Gamer Casual con Budget Limitato
+## Case Study: Gamer Casual con Budget Limitato
 
-**Profilo Utente:**
+**Profilo:**
 - Genere preferito: Indie
 - Budget disponibile: €500
 - Requisiti: Affidabilità, silenziosità
-- Giochi target: Stardew Valley, Celeste, Hollow Knight
 
 **Esecuzione Sistema:**
 
 ```
-[00:00] Input validazione
-  Genere: "Indie" ✓ (Popolarità: 0.82)
-  Budget: €500 ✓ (Intervallo valido)
-
 [00:01] Knowledge Base Query
   Top 5 titoli Indie:
   1. Stardew Valley (Rating 9.4, Success 0.96)
   2. Hollow Knight (Rating 9.2, Success 0.91)
   3. Celeste (Rating 9.1, Success 0.89)
-  4. Hades (Rating 8.9, Success 0.87)
-  5. Among Us (Rating 7.8, Success 0.78)
 
 [00:02] Bayesian Inference
   P(Success | Genre=Indie) = 0.82
   IC 95%: [0.78, 0.86]
-  Interpretazione: "Genere STABILE e AFFIDABILE"
+  Interpretazione: Genere STABILE e AFFIDABILE
 
 [00:02] CSP Resolution
-  Ricerca soluzioni...
   Soluzioni trovate: 3
 
-[00:02] Hardware Recommendations
-
   CONFIG 1: Budget Ottimale ✓
-    CPU: Ryzen 5 5600G (€160)  [iGPU integrata]
-    GPU: N/A (integrata)
+    CPU: Ryzen 5 5600G (€160, iGPU integrata)
     RAM: 16GB DDR4 (€60)
     SSD: 512GB NVMe (€35)
     PSU: 450W (€45)
@@ -1466,123 +1224,15 @@ Vincolo Rilassato:
     Prezzo: €300
     Performance: 6.2/10
     Adatto per: Indie, Casual
-    Vantaggi: Economico, fanless options disponibili
-
-  CONFIG 2: Equilibrato
-    CPU: Ryzen 5 7600X (€200)
-    GPU: RTX 3050 (€150)
-    RAM: 16GB DDR4 (€70)
-    SSD: 1TB NVMe (€60)
-    PSU: 550W (€50)
-    ─────────────────────
-    Prezzo: €530 (Fuori budget)
-    Performance: 7.1/10
-    Nota: Consigliato per upgrade futuro
 
 [00:03] Output Finale
   Raccomandazione: CONFIG 1
-  Motivazione: Perfetto per genere Indie, ottimizza budget,
-              grafica integrata sufficiente per titoli 2D/casual
+  Motivazione: Perfetto per genere Indie, economico,
+               grafica integrata sufficiente per titoli 2D
   Tempo totale: 312ms
 ```
 
-**Analisi Post-Esecuzione:**
-- ✓ Soluzione economica e efficiente
-- ✓ Adatta perfettamente al genere
-- ✓ Margine budget: €200 per monitor/periferiche
-- ✗ Performance limite per titoli futuri più impegnativi
-
-## Case Study 2: Content Creator Professionale
-
-**Profilo Utente:**
-- Genere: Action (per gameplay footage)
-- Budget: €2500
-- Requisiti: Performance massima, stabilità, streaming capability
-- Giochi target: Triple-A moderni (Cyberpunk, Alan Wake 2, Star Wars Outlaws)
-
-**Esecuzione Sistema:**
-
-```
-[00:00] Input Validation
-  Genere: "Action" ✓ (Popolarità: 0.95)
-  Budget: €2500 ✓ (Premium tier)
-
-[00:01] Knowledge Base Query
-  Top 5 Action Titles:
-  1. Cyberpunk 2077 (Rating 8.1, Success 0.85)
-  2. Call of Duty Modern Warfare III (Rating 7.9, Success 0.83)
-  3. Starfield (Rating 7.5, Success 0.81)
-  4. Alan Wake 2 (Rating 8.4, Success 0.86)
-  5. Dragon Age Inquisition (Rating 8.2, Success 0.84)
-
-[00:02] Bayesian Inference
-  P(Success | Genre=Action) = 0.756
-  IC 95%: [0.721, 0.791]
-  Interpretazione: "Genere AD ALTA REDDITIVITÀ"
-
-[00:02] CSP Resolution (Premium Search)
-  Vincoli aggiuntivi applicati:
-  - Min Performance: 8.5/10 (per 4K streaming)
-  - DDR5 Only: Per future-proofing
-  - Power headroom 30%+: Per streaming hardware
-  
-  Soluzioni trovate: 8 (tutte premium tier)
-
-[00:02] Hardware Recommendations
-
-  CONFIG 1: Streaming Optimized ✓
-    CPU: i9-13900K (€500) [Rendering 4K, encoding stream]
-    GPU: RTX 4090 (€1600) [Gameplay + encoding]
-    RAM: 64GB DDR5 (€400) [Streaming buffer, OBS workspace]
-    SSD: 2TB NVMe Gen5 (€150)
-    PSU: 1200W Platinum (€300)
-    Capture Card: RTXIO ($800 external)
-    ─────────────────────
-    Prezzo: €3750 (Over budget €1250)
-    Performance: 9.8/10
-    Stream Quality: 4K60fps @ 20Mbps
-    FPS: 120+ @ 4K Ultra
-
-  CONFIG 2: Balanced Pro
-    CPU: Ryzen 7 7700X (€300)
-    GPU: RTX 4080 (€1100)
-    RAM: 32GB DDR5 (€200)
-    SSD: 2TB NVMe (€150)
-    PSU: 1000W Gold (€200)
-    ─────────────────────
-    Prezzo: €2050 ✓ (Sotto budget)
-    Performance: 9.2/10
-    Stream Quality: 1440p60fps @ 12Mbps
-    FPS: 100+ @ 1440p Ultra
-
-  CONFIG 3: Cost-Efficient High-End
-    CPU: Ryzen 9 5900X (€300)
-    GPU: RTX 4070 Ti (€700)
-    RAM: 32GB DDR4 (€150)
-    SSD: 1TB NVMe (€100)
-    PSU: 850W Gold (€150)
-    ─────────────────────
-    Prezzo: €1400 ✓ (Molto sotto budget)
-    Performance: 8.7/10
-    Stream Quality: 1080p60fps @ 8Mbps
-    FPS: 85+ @ 1440p High
-
-[00:03] Output Finale
-  Raccomandazione: CONFIG 2
-  Motivazione:
-    - Performance sufficiente per 1440p streaming
-    - Budget ottimizzato con margine €450
-    - DDR5 fornisce upgrade path futuro
-    - Excellent per gaming + streaming dual workload
-  
-  Tempo totale: 487ms
-```
-
-**Metriche di Successo:**
-- ✓ Streaming stabile a 1440p60fps
-- ✓ Capacità di gestire giochi AAA al massimo
-- ✓ Buffer sufficiente per streaming multiplo
-- ✓ Upgrade path chiaro (GPU nel 2025)
+**Analisi:** Soluzione efficiente, margine €200 per monitor/periferiche.
 
 ---
 
@@ -1723,6 +1373,7 @@ xychart-beta
 
 <a name="capitolo-9"></a>
 # Capitolo 9: Best Practices e Linee Guida Operative
+<a name="capitolo-9"></a>
 
 ## 10.1 Deployment e Configurazione
 
@@ -1874,51 +1525,32 @@ def detect_anomalies(new_data, historical_stats, threshold=3.0):
 3. Dataset corrotto
 
 **Soluzione:**
-```python
-# Ricostruire indici
-def rebuild_kb_indexes():
-    print("Rebuilding KB indexes...")
-    
-    # Clear old indexes
-    kb.clear_indexes()
-    
-    # Rebuild with optimization
-    kb.create_index('game_id', 'game')
-    kb.create_index('genre', 'game')
-    kb.create_index('rating', 'game')
-    
-    # Verify index integrity
-    assert kb.verify_indexes() == True
-    print("KB indexes rebuilt successfully")
 
-rebuild_kb_indexes()
-```
+## 9.4 Conclusioni
 
-### Problema: Probabilità non calibrate (Brier Score > 0.25)
+GAMELOG integra con successo tre paradigmi di ragionamento (logica, probabilità, CSP) fornendo:
 
-**Cause possibili:**
-1. Smoothing alpha inadeguato
-2. CPD outliers
-3. Dataset imbalance
+**Punti di Forza:**
+- Raccomandazioni accurate (98% logic, 82% probabilistic calibration)
+- Tempi di risposta eccellenti (<500ms)
+- Trasparenza decisionale (spiegazione delle raccomandazioni)
+- Scalabilità elevata (gestione fino a 100K games)
+- Gestione vincoli hard e soft
 
-**Soluzione:**
-```python
-# Ri-apprendere CPD con smoothing adattivo
-def recalibrate_cpd(train_data, test_data):
-    best_alpha = 1.0
-    best_brier = float('inf')
-    
-    for alpha in [0.5, 1.0, 2.0, 5.0]:
-        cpd = learn_cpd_with_smoothing(train_data, alpha)
-        brier = calculate_brier_score(cpd, test_data)
-        
-        if brier < best_brier:
-            best_brier = brier
-            best_alpha = alpha
-    
-    print(f"Optimal alpha: {best_alpha}, Brier: {best_brier}")
-    return learn_cpd_with_smoothing(train_data, best_alpha)
-```
+**Contributi Principali:**
+- Sistema multi-paradigma integrato
+- Knowledge Base strutturata per gaming domain
+- Ottimizzazione hardware con CSP
+
+**Limitazioni:**
+- Dipendenza dalla qualità dei dati di input
+- Setup iniziale complesso
+- Manutenzione Knowledge Base richiede expertise
+
+**Sviluppi Futuri:**
+- Integrazione API Steam real-time
+- Sistema di user profiles e collaborative filtering
+- Piattaforma web/mobile
 
 ---
 
@@ -1986,123 +1618,23 @@ Validity:         96/100 ✓
 
 <a name="capitolo-11"></a>
 # Capitolo 11: Roadmap Tecnica Dettagliata
+<a name="capitolo-11"></a>
 
-## 12.1 Q1 2026: Fase 1 - Real-time Integration
+## Timeline e Milestone Principali
 
-### Milestone 1.1: Steam API Wrapper (Week 1-2)
+| Fase | Periodo | Obiettivi Chiave | Metriche Target |
+|------|---------|------------------|------------------|
+| **Fase 1** | Q1 2026 | Steam API real-time integration | API <200ms, Update <15min |
+| **Fase 2** | Q2 2026 | User profiles & preference learning | Collaborative filtering |
+| **Fase 3** | Q3-Q4 2026 | Web/Mobile platform deployment | React + FastAPI + PostgreSQL |
 
-```
-Deliverables:
-  ✓ AsyncIO-based API client
-  ✓ Rate limit handling
-  ✓ Error recovery mechanism
-  ✓ Unit tests (90%+ coverage)
+### Stack Tecnologico Fase 3
 
-Metrics:
-  - API response time: < 200ms
-  - Success rate: > 99.5%
-  - Memory footprint: < 50MB
-```
+**Frontend:** React 18 / React Native + TailwindCSS + Redux
 
+**Backend:** FastAPI + PostgreSQL + Redis
 
-### Milestone 1.2: Incremental Dataset Update (Week 3-4)
-
-```
-Deliverables:
-  ✓ Delta sync mechanism
-  ✓ Merge strategy
-  ✓ Validation pipeline
-  ✓ Rollback capability
-
-Performance:
-  - Update time: < 15 minutes
-  - Data freshness: < 24 hours
-  - Downtime: < 5 minutes
-```
-
-## 12.2 Q2 2026: Fase 2 - User Personalization
-
-### Milestone 2.1: User Profile System (Week 5-6)
-
-```
-Database Schema:
-  
-CREATE TABLE users (
-  user_id UUID PRIMARY KEY,
-  created_at TIMESTAMP,
-  preferred_genres JSONB,
-  budget_range FLOAT2,
-  preferences JSONB
-);
-
-CREATE TABLE user_history (
-  history_id UUID PRIMARY KEY,
-  user_id FK → users.user_id,
-  query_timestamp TIMESTAMP,
-  genre_queried VARCHAR,
-  budget_range FLOAT,
-  recommendations_clicked INT
-);
-```
-
-### Milestone 2.2: Preference Learning (Week 7-8)
-
-```
-Algoritmo: Collaborative Filtering
-
-similarity(user_i, user_j) = 
-  cosine_similarity(
-    [rating_1, rating_2, ..., rating_n],
-    [rating_1', rating_2', ..., rating_n']
-  )
-
-recommendation_score(user, game) =
-  Σ_similar_users weight(similarity) × rating(user, game)
-```
-
-## 12.3 Q3-Q4 2026: Fase 3 - Web/Mobile Platform
-
-### Technology Stack
-
-```
-Frontend:
-  - React 18 (Web)
-  - React Native (Mobile)
-  - TailwindCSS (Styling)
-  - Redux (State management)
-
-Backend:
-  - FastAPI (Python web framework)
-  - PostgreSQL (Persistent storage)
-  - Redis (Caching)
-  - Docker (Containerization)
-
-DevOps:
-  - GitHub Actions (CI/CD)
-  - Kubernetes (Orchestration)
-  - Prometheus (Monitoring)
-  - ELK Stack (Logging)
-```
-
-### API Endpoints Design
-
-```
-POST /api/v1/recommendations
-  Input: { genre: string, budget: float }
-  Output: { 
-    titles: [...],
-    probability: float,
-    configs: [...],
-    execution_time: int
-  }
-
-POST /api/v1/user/profile
-  Input: { user_id, preferences: {...} }
-  Output: { success: bool, updated: timestamp }
-
-GET /api/v1/user/history/{user_id}
-  Output: { queries: [...], recommendations: [...] }
-```
+**DevOps:** Docker + Kubernetes + GitHub Actions + Prometheus
 
 ---
 
@@ -2197,239 +1729,64 @@ GAMELOG_NUM_WORKERS=4
 
 <a name="appendice-b"></a>
 # Appendice B: Guida all'Installazione
+<a name="appendice-b"></a>
 
-## B.1 Installazione Passo-Passo
+## B.1 Installazione Rapida
 
-### Passo 1: Clonare o Scaricare il Repository
+**Prerequisiti:** Python 3.9+
+
 ```bash
 git clone https://github.com/simone/gamelog.git
 cd gamelog
-```
-
-### Passo 2: Creare Ambiente Virtuale Python
-```bash
-# Windows
 python -m venv venv
-.\venv\Scripts\Activate.ps1
-
-# Linux/macOS
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### Passo 3: Installare Dipendenze
-```bash
-pip install --upgrade pip
+source venv/bin/activate  # Linux/macOS
 pip install -r requirements.txt
+python main.py --genre Action
 ```
 
-### Passo 4: Verificare Installazione
+## B.2 Dataset
+
+Dataset inclusi in `data/`: `steam.csv` (~60K righe), `steam_description_data.csv` (~50K righe)
+
+## B.3 Esempi di Utilizzo
+
 ```bash
-python main.py --test
-```
-
-## B.2 Download Dataset
-
-I dataset sono inclusi in `data/`:
-- `steam.csv` - Dataset principale (~60,000 righe)
-- `steam_description_data.csv` - Descrizioni (~50,000 righe)
-
-Se necessario scaricarli manualmente:
-```bash
-python data_loader.py --download
-```
-
-## B.3 Primo Utilizzo
-
-### Test del Sistema
-```bash
-# Eseguire test unitari
-pytest tests/ -v
-
-# Eseguire il programma principale
-python main.py
-
-# Specificare un genere
-python main.py --genre "Action"
-
-# Specificare un budget hardware
-python main.py --budget 1000
-```
-
-### Esempi di Comandi
-```bash
-# Trovare titoli di azione
 python main.py --genre Action --top 5
-
-# Ottimizzare hardware per 800€
-python main.py --hardware --budget 800 --currency EUR
-
-# Combinato: titoli + hardware
+python main.py --hardware --budget 800
 python main.py --genre RPG --budget 1500 --all-recommendations
 ```
 
 ## B.4 Troubleshooting
 
-### Problema: "ModuleNotFoundError"
-```
-Soluzione: Verificare che venv sia attivo e dipendenze installate
-pip install -r requirements.txt
-```
-
-### Problema: "CSV file not found"
-```
-Soluzione: Verificare percorso data/ e file CSV
-python data_loader.py --validate
-```
-
-### Problema: "Insufficient memory"
-```
-Soluzione: Usare sampling dataset
-python main.py --sample 0.5
-```
-
-### Problema: Rete Bayesiana non converge
-```
-Soluzione: Aumentare iterazioni
-python main.py --bayesian-iterations 10000
-```
-
-## B.5 Configurazione Avanzata
-
-### Personalizzare Parametri di Learning
-Modificare in `bayesian_learner.py`:
-```python
-LEARNING_RATE = 0.01      # Velocità apprendimento
-MAX_ITERATIONS = 5000      # Massime iterazioni
-SMOOTHING_ALPHA = 1.0      # Laplace smoothing
-CONFIDENCE_LEVEL = 0.95    # Livello confidenza
-```
-
-### Configurare CSP Solver
-Modificare in `hardware_csp.py`:
-```python
-SEARCH_STRATEGY = "backtracking"  # O "arc_consistency"
-VARIABLE_HEURISTIC = "mrv"        # O "lcv"
-MAX_SOLUTIONS = 5                 # Numero soluzioni da trovare
-TIMEOUT_SECONDS = 10              # Timeout risolutore
-```
-
-## B.6 Performance Tuning
-
-### Ottimizzare per Velocità
-```bash
-python main.py --mode fast --cache enabled
-```
-
-### Ottimizzare per Precisione
-```bash
-python main.py --mode accurate --bayesian-iterations 20000
-```
-
-### Uso Memoria Limitata
-```bash
-python main.py --memory-efficient --batch-size 100
-```
+| Problema | Soluzione |
+|----------|----------|
+| ModuleNotFoundError | `pip install -r requirements.txt` |
+| CSV file not found | Verificare directory `data/` |
+| Insufficient memory | `python main.py --sample 0.5` |
+| Bayesian convergence | `--bayesian-iterations 10000` |
 
 ---
 
 <a name="appendice-c"></a>
 # Appendice C: Riferimenti Bibliografici
 
-## C.1 Letteratura Scientifica Fondamentale
+**Letteratura Fondamentale:**
 
-### Reti Bayesiane e Probabilità
-[1] Russell, S., Norvig, P. (2020). "Artificial Intelligence: A Modern Approach" (4th ed.). Prentice Hall.
+[1] Russell, S., Norvig, P. (2020). "Artificial Intelligence: A Modern Approach" (4th ed.)
+[2] Koller, D., Friedman, N. (2009). "Probabilistic Graphical Models"
+[3] Dechter, R. (2003). "Constraint Processing"
+[4] Ricci et al. (2015). "Recommender Systems Handbook" (2nd ed.)
+[5] Studer et al. (1998). "Knowledge Engineering: Principles and Methods"
 
-[2] Pearl, J. (2009). "Causality: Models, Reasoning, and Inference" (2nd ed.). Cambridge University Press.
-
-[3] Koller, D., Friedman, N. (2009). "Probabilistic Graphical Models: Principles and Techniques". MIT Press.
-
-[4] Murphy, K. P. (2012). "Machine Learning: A Probabilistic Perspective". MIT Press.
-
-### Constraint Satisfaction Problems
-[5] Dechter, R. (2003). "Constraint Processing". Morgan Kaufmann.
-
-[6] Apt, K. R. (2003). "Principles of Constraint Programming". Cambridge University Press.
-
-[7] Kumar, V. (1992). "Algorithms for Constraint Satisfaction Problems". IEEE Expert.
-
-### Sistemi di Raccomandazione
-[8] Ricci, F., Rokach, L., Shapira, B. (2015). "Recommender Systems Handbook" (2nd ed.). Springer.
-
-[9] Aggarwal, C. C. (2016). "Recommender Systems". Springer.
-
-### Ingegneria della Conoscenza
-[10] Studer, R., Benjamins, R., Fensel, D. (1998). "Knowledge Engineering: Principles and Methods". Data & Knowledge Engineering.
-
-[11] Giarratano, J., Riley, G. (2005). "Expert Systems: Principles and Programming" (4th ed.). Course Technology.
-
-## C.2 Dataset e Fonti
-
-- **SteamDB** (https://steamdb.info/) - Database Steam pubblico
-- **Steam Web API** (https://steamcommunity.com/dev) - API ufficiale Steam
-- **Kaggle Datasets** - Dataset Steam preprocessati
-- **GitHub Repositories** - Progetti similari di analisi Steam
-
-## C.3 Tools e Librerie Utilizzate
-
-### Librerie Python Specifiche
-
-[12] PyDOE - Design of Experiments
-https://github.com/tisimst/pyDOE
-
-[13] NetworkX - Graph Analysis
-https://networkx.org/
-
-[14] Optuna - Hyperparameter Optimization
-https://optuna.org/
-
-[15] SHAP - Model Explainability
-https://shap.readthedocs.io/
-
-### Framework di Constraint Programming
-
-[16] OR-Tools (Google)
-https://developers.google.com/optimization
-
-[17] Choco Solver
-https://choco-solver.org/
-
-[18] Gurobi Optimizer
-https://www.gurobi.com/
-
-## C.4 Articoli e Pubblicazioni Correlate
-
-**Recommendation Systems for Gaming:**
-- "Implicit Collaborative Filtering through Parameter Free Spectral Clustering" (2015)
-- "Temporal Dynamics of Preference Learning" (2018)
-
-**Hardware Optimization:**
-- "Multi-Objective Hardware Configuration Optimization" (2019)
-- "Price-Performance Tradeoffs in Component Selection" (2020)
-
-**Knowledge Representation:**
-- "Hybrid Approaches to Knowledge Representation" (2021)
-- "Integrating Symbolic and Probabilistic Methods" (2022)
-
-## C.5 Standards e Specifiche
-
-- **JSON Schema** - Validazione configurazioni
-- **OpenAPI 3.0** - Specifiche API REST
-- **YAML** - Configurazione applicazioni
-- **CSV** - Format dati tabellari standard
-
-## C.6 Documentazione Ufficiale Consultata
-
-- Python 3.13 Official Documentation
-- pandas Documentation (https://pandas.pydata.org/)
-- scikit-learn User Guide (https://scikit-learn.org/)
-- Pyodide Documentation (https://pyodide.org/)
+**Dataset e Tools:**
+- SteamDB: https://steamdb.info/
+- Python Libraries: pgmpy, constraint, pandas, scikit-learn
+- OR-Tools: Google Optimization Framework
 
 ---
 
 <a name="appendice-d"></a>
-# Appendice D: Formule Matematiche Dettagliate 
+# Appendice D: Formule Matematiche Dettagliate
 
 ## Formule Utilizzate nel Progetto
 
@@ -2496,6 +1853,7 @@ dove:
 
 <a name="appendice-e"></a>
 # Appendice E: Glossario Tecnico 
+<a name="appendice-e"></a>
 
 **Bayesian Network:** Grafo orientato aciclico che rappresenta dipendenze probabilistiche
 
