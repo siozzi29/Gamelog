@@ -711,112 +711,105 @@ La implementazione utilizza pyDatalog, che fornisce:
 
 PREDICATI BASE:
 
-Predicato 1: game(ID, Name, PrimaryGenre, SecondaryGenre, Rating, SuccessScore)
-  Dominio ID: Intero [1, 24645]
-  Dominio Name: Stringa
-  Dominio PrimaryGenre: Categoria [Action, RPG, Strategy, ...]
-  Dominio Rating: Float [0, 10]
-  Dominio SuccessScore: Float [0, 1]
-  Cardinalità: 24,645 fatti
+- Predicato 1: game(ID, Name, PrimaryGenre, SecondaryGenre, Rating, SuccessScore)
+  - Dominio ID: Intero [1, 24645]
+  - Dominio Name: Stringa
+  - Dominio PrimaryGenre: Categoria [Action, RPG, Strategy, ...]
+  - Dominio Rating: Float [0, 10]
+  - Dominio SuccessScore: Float [0, 1]
+  - Cardinalità: 24,645 fatti
 
-Predicato 2: genre(Name, Popularity, NumTitles, AvgRating)
-  Dominio Name: Stringa (34 generi)
-  Dominio Popularity: Float [0, 1]
-  Dominio NumTitles: Intero
-  Cardinalità: 34 fatti
+- Predicato 2: genre(Name, Popularity, NumTitles, AvgRating)
+  - Dominio Name: Stringa (34 generi)
+  - Dominio Popularity: Float [0, 1]
+  - Dominio NumTitles: Intero
+  - Cardinalità: 34 fatti
 
-Predicato 3: hardware_component(ComponentID, Category, Name, Price, Performance)
-  Dominio ComponentID: Intero
-  Dominio Category: [CPU, GPU, RAM, SSD, PSU]
-  Dominio Name: Stringa
-  Dominio Price: Float (EUR)
-  Dominio Performance: Float [0, 10]
-  Cardinalità: ~500 componenti
+- Predicato 3: hardware_component(ComponentID, Category, Name, Price, Performance)
+  - Dominio ComponentID: Intero
+  - Dominio Category: [CPU, GPU, RAM, SSD, PSU]
+  - Dominio Name: Stringa
+  - Dominio Price: Float (EUR)
+  - Dominio Performance: Float [0, 10]
+  - Cardinalità: ~500 componenti
 
 ## 4.3 Regole Definite
 
 REGOLA 1: games_of_genre
-  Definizione:
-    games_of_genre(GenreName, GameID, Rating) :-
-      game(GameID, _, GenreName, _, Rating, _) |
-      game(GameID, _, _, GenreName, Rating, _)
-  Significato: Trova tutti i giochi di un genere specifico
-  Complessità: O(n) dove n = numero giochi
-  Utilizzo: Base per altre regole
+  - Definizione:
+    - games_of_genre(GenreName, GameID, Rating) :- 
+    - game(GameID, _, GenreName, _, Rating, _) | 
+    - game(GameID, _, _, GenreName, Rating, _)
+  - Significato: Trova tutti i giochi di un genere specifico
+  - Complessità: O(n) dove n = numero giochi
+  - Utilizzo: Base per altre regole
 
 REGOLA 2: successful_games
-  Definizione:
-    successful_games(GameID, Name, Rating, Success) :-
-      game(GameID, Name, _, _, Rating, Success),
-      Rating >= 7.5,
-      Success >= 0.75
-  Significato: Giochi di successo (rating alto e popolarità)
-  Criteri: Rating >= 7.5 AND Success >= 0.75
-  Complessità: O(n)
-  Utilizzo: Raccomandazioni primarie
-
+  - Definizione:
+    - successful_games(GameID, Name, Rating, Success) :-
+      - game(GameID, Name, _, _, Rating, Success),
+      - Rating >= 7.5,
+      - Success >= 0.75
+  - Significato: Giochi di successo (rating alto e popolarità)
+  - Criteri: Rating >= 7.5 AND Success >= 0.75
+  - Complessità: O(n)
+  - Utilizzo: Raccomandazioni primarie
+ 
 REGOLA 3: popular_genre
-  Definizione:
-    popular_genre(GenreName) :-
-      genre(GenreName, Pop, NumTitles, _),
-      Pop >= 0.5,
-      NumTitles >= 100
-  Significato: Generi popolari e con numero titoli sufficiente
-  Criterio: Popolarità >= 50% E NumTitles >= 100
-  Utilizzo: Validazione input genere
+  - Definizione:
+    - popular_genre(GenreName) :-
+      - genre(GenreName, Pop, NumTitles, _),
+      - Pop >= 0.5,
+      - NumTitles >= 100
+  - Significato: Generi popolari e con numero titoli sufficiente
+  - Criterio: Popolarità >= 50% E NumTitles >= 100
+  - Utilizzo: Validazione input genere
 
 REGOLA 4: top_games_genre
-  Definizione:
-    top_games_genre(GenreName, GameID, Name, Rating, Success) :-
-      games_of_genre(GenreName, GameID, Rating),
-      game(GameID, Name, _, _, Rating, Success),
-      successful_games(GameID, _, _, _)
-  Significato: Top games per genere (filtrati per successo)
-  Complessità: O(n * m) dove m = games per genere
-  Utilizzo: Query principale per raccomandazioni
+  - Definizione:
+    - top_games_genre(GenreName, GameID, Name, Rating, Success) :-
+      - games_of_genre(GenreName, GameID, Rating),
+      - game(GameID, Name, _, _, Rating, Success),
+      - successful_games(GameID, _, _, _)
+  - Significato: Top games per genere (filtrati per successo)
+  - Complessità: O(n * m) dove m = games per genere
+  - Utilizzo: Query principale per raccomandazioni
 
 REGOLA 5: hardware_compatible
-  Definizione:
-    hardware_compatible(CPUComponent, GPUComponent, RAMComponent) :-
-      hardware_component(_, 'CPU', _, _, _) & CPUComponent,
-      hardware_component(_, 'GPU', _, _, _) & GPUComponent,
-      hardware_component(_, 'RAM', _, _, _) & RAMComponent,
-      compatible_socket(CPUComponent, RAMComponent),
-      compatible_power(CPUComponent, GPUComponent)
-  Significato: Validazione compatibilità componenti
-  Utilizzo: Vincolo nel CSP Solver
+  - Definizione:
+    - hardware_compatible(CPUComponent, GPUComponent, RAMComponent) :-
+      - hardware_component(_, 'CPU', _, _, _) & CPUComponent,
+      - hardware_component(_, 'GPU', _, _, _) & GPUComponent,
+      - hardware_component(_, 'RAM', _, _, _) & RAMComponent,
+      - compatible_socket(CPUComponent, RAMComponent),
+      - compatible_power(CPUComponent, GPUComponent)
+  - Significato: Validazione compatibilità componenti
+  - Utilizzo: Vincolo nel CSP Solver
 
 ## 4.4 Query Principali
 
 QUERY 1: Titoli di Successo per Genere
-  Sintassi: query_successful_games_by_genre(GenreName)
-  Esempio: query_successful_games_by_genre('Action')
-  Output: Lista[(GameID, Name, Rating, SuccessScore)]
-  Ordine: Decrescente per SuccessScore
-  Limite: Top 5 risultati
+  - Sintassi: query_successful_games_by_genre(GenreName)
+  - Esempio: query_successful_games_by_genre('Action')
+  - Output: Lista[(GameID, Name, Rating, SuccessScore)]
+  - Ordine: Decrescente per SuccessScore
+  - Limite: Top 5 risultati
 
 Implementazione pseudocodice:
-  def query_successful_games_by_genre(genre):
-      results = []
-      for rule in successful_games:
-          if rule.genre == genre:
-              results.append((rule.game_id, rule.name, 
-                            rule.rating, rule.success))
-      return sorted(results, 
-                   key=lambda x: x.success, 
-                   reverse=True)[:5]
 
-QUERY 2: Validazione Genere Popolare
-  Sintassi: is_popular_genre(GenreName)
-  Esempio: is_popular_genre('Unknown_Genre')
-  Output: Boolean
-  Utilizzo: Validazione input
+![alt text](img/image-5.png)
 
-QUERY 3: Compatibilità Hardware
-  Sintassi: check_hardware_compatibility(CPU, GPU, RAM)
-  Esempio: check_hardware_compatibility('Ryzen_5600X', 'RTX_4070', '16GB_DDR4')
-  Output: Boolean, String (motivazione)
-  Utilizzo: Validazione nelle configurazioni CSP
+- QUERY 2: Validazione Genere Popolare
+  - Sintassi: is_popular_genre(GenreName)
+  - Esempio: is_popular_genre('Unknown_Genre')
+  - Output: Boolean
+  - Utilizzo: Validazione input
+
+- QUERY 3: Compatibilità Hardware
+  - Sintassi: check_hardware_compatibility(CPU, GPU, RAM)
+  - Esempio: check_hardware_compatibility('Ryzen_5600X', 'RTX_4070', '16GB_DDR4')
+  - Output: Boolean, String (motivazione)
+  - Utilizzo: Validazione nelle configurazioni CSP
 
 ## 4.5 Caricamento dei Dati in KB
 
@@ -828,29 +821,29 @@ FASE 1: Estrazione Dati da Dataset
   - Validazione dei tipi
 
 FASE 2: Creazione Fatti Giochi
-  Per ogni riga del CSV:
-    game_id = row['app_id']
-    game_name = row['name']
-    primary_genre = row['primary_genre']
-    rating = row['rating']
-    success = row['success_score']
+  - Per ogni riga del CSV:
+    - game_id = row['app_id']
+    - game_name = row['name']
+    - primary_genre = row['primary_genre']
+    - rating = row['rating']
+    - success = row['success_score']
     → Crea fatto: game(game_id, game_name, primary_genre, rating, success)
 
 FASE 3: Creazione Fatti Generi
-  Per ogni genere unico:
-    genre_name = genere
-    popularity = (num_successful_titles / total_titles_genre)
-    num_titles = count(games con questo genere)
-    avg_rating = mean(ratings games in questo genere)
+  - Per ogni genere unico:
+    - genre_name = genere
+    - popularity = (num_successful_titles / total_titles_genre)
+    - num_titles = count(games con questo genere)
+    - avg_rating = mean(ratings games in questo genere)
     → Crea fatto: genre(genre_name, popularity, num_titles, avg_rating)
 
 FASE 4: Creazione Fatti Hardware
-  Caricamento database hardware:
-    component_id = incremento
-    category = 'CPU' | 'GPU' | 'RAM' | 'SSD' | 'PSU'
-    name = nome componente
-    price = prezzo in EUR
-    performance = score calcolato
+  - Caricamento database hardware:
+    - component_id = incremento
+    - category = 'CPU' | 'GPU' | 'RAM' | 'SSD' | 'PSU'
+    - name = nome componente
+    - price = prezzo in EUR
+    - performance = score calcolato
     → Crea fatto: hardware_component(id, category, name, price, perf)
 
 FASE 5: Indicizzazione
@@ -866,15 +859,15 @@ Tempo di caricamento: ~15 secondi per 24,645 giochi
 ANALISI DELLA COMPLESSITÀ:
 
 Operazione: Query successful_games_by_genre
-  Time Complexity: O(n) dove n = numero totale giochi
-  Space Complexity: O(k) dove k = giochi nel genere
-  Causa: Iterazione su tutti i giochi per filtraggio
-  Ottimizzazione: Indice su genere riduce a O(k)
+  - Time Complexity: O(n) dove n = numero totale giochi
+  - Space Complexity: O(k) dove k = giochi nel genere
+  - Causa: Iterazione su tutti i giochi per filtraggio
+  - Ottimizzazione: Indice su genere riduce a O(k)
 
 Operazione: Validazione genere popolare
-  Time Complexity: O(1) con lookup tabella
-  Space Complexity: O(1)
-  Metodo: Hash table su nomi generi
+  - Time Complexity: O(1) con lookup tabella
+  - Space Complexity: O(1)
+  - Metodo: Hash table su nomi generi
 
 MISURAZIONE EMPIRICHE (su hardware standard):
   
@@ -890,18 +883,18 @@ MISURAZIONE EMPIRICHE (su hardware standard):
 ## 4.7 Vantaggi e Limitazioni
 
 VANTAGGI della Knowledge Base:
-  ✓ Trasparenza: Le regole sono esplicite e comprensibili
-  ✓ Determinismo: Stesse query producono stessi risultati
-  ✓ Scalabilità: Aggiunta di nuove regole non complessa
-  ✓ Manutenibilità: Facile debug e modifica regole
-  ✓ Spiegabilità: Tracciamento delle derivazioni
+  - ✓ Trasparenza: Le regole sono esplicite e comprensibili
+  - ✓ Determinismo: Stesse query producono stessi risultati
+  - ✓ Scalabilità: Aggiunta di nuove regole non complessa
+  - ✓ Manutenibilità: Facile debug e modifica regole
+  - ✓ Spiegabilità: Tracciamento delle derivazioni
 
 LIMITAZIONI della Knowledge Base:
-  ✗ Incapacità di gestire incertezza
-  ✗ Esplosione combinatoria per query complesse
-  ✗ Richiede specifica esplicita di tutte le regole
-  ✗ Non adatto a problemi probabilistici
-  ✗ Difficile apprendimento automatico di nuove regole
+  - ✗ Incapacità di gestire incertezza
+  - ✗ Esplosione combinatoria per query complesse
+  - ✗ Richiede specifica esplicita di tutte le regole
+  - ✗ Non adatto a problemi probabilistici
+  - ✗ Difficile apprendimento automatico di nuove regole
 
 ## 4.8 Integrazione con Altri Moduli
 
@@ -977,47 +970,47 @@ graph TD
 NODI DELLA RETE:
 
 Nodo 1: Genre
-  Type: Variabile Categorica
-  Valori Possibili: {Action, RPG, Strategy, Indie, Adventure, Casual, Simulation, Sports}
-  Cardinalità: 8
-  Distribuzione A Priori (Prior):
-    P(Genre)
-    ├─ P(Action) = 0.280
-    ├─ P(RPG) = 0.185
-    ├─ P(Strategy) = 0.125
-    ├─ P(Indie) = 0.155
-    ├─ P(Adventure) = 0.105
-    ├─ P(Casual) = 0.085
-    ├─ P(Simulation) = 0.055
-    └─ P(Sports) = 0.030
+  - Type: Variabile Categorica
+  - Valori Possibili: {Action, RPG, Strategy, Indie, Adventure, Casual, Simulation, Sports}
+  - Cardinalità: 8
+  - Distribuzione A Priori (Prior):
+    - P(Genre)
+    - ├─ P(Action) = 0.280
+    - ├─ P(RPG) = 0.185
+    - ├─ P(Strategy) = 0.125
+    - ├─ P(Indie) = 0.155
+    - ├─ P(Adventure) = 0.105
+    - ├─ P(Casual) = 0.085
+    - ├─ P(Simulation) = 0.055
+    - └─ P(Sports) = 0.030
 
 Nodo 2: Quality
-  Type: Variabile Ordinale
-  Valori Possibili: {Low, Medium, High}
-  Cardinalità: 3
-  Parents: Genre
-  Significato: Qualità media (rating) del titolo nel genere
+  - Type: Variabile Ordinale
+  - Valori Possibili: {Low, Medium, High}
+  - Cardinalità: 3
+  - Parents: Genre
+  - Significato: Qualità media (rating) del titolo nel genere
 
 Nodo 3: Popularity
-  Type: Variabile Ordinale
-  Valori Possibili: {Low, Medium, High}
-  Cardinalità: 3
-  Parents: Genre
-  Significato: Popolarità (numero recensioni) relativa nel genere
+  - Type: Variabile Ordinale
+  - Valori Possibili: {Low, Medium, High}
+  - Cardinalità: 3
+  - Parents: Genre
+  - Significato: Popolarità (numero recensioni) relativa nel genere
 
 Nodo 4: Price_Tier
-  Type: Variabile Ordinale
-  Valori Possibili: {Budget, Economy, Standard, Premium}
-  Cardinalità: 4
-  Parents: Genre
-  Significato: Fasce di prezzo tipiche del genere
+  - Type: Variabile Ordinale
+  - Valori Possibili: {Budget, Economy, Standard, Premium}
+  - Cardinalità: 4
+  - Parents: Genre
+  - Significato: Fasce di prezzo tipiche del genere
 
 Nodo 5: Success
-  Type: Variabile Booleana
-  Valori Possibili: {Yes, No}
-  Cardinalità: 2
-  Parents: Quality, Popularity, Price_Tier
-  Significato: Successo commerciale del titolo
+  - Type: Variabile Booleana
+  - Valori Possibili: {Yes, No}
+  - Cardinalità: 2
+  - Parents: Quality, Popularity, Price_Tier
+  - Significato: Successo commerciale del titolo
 
 STRUTTURA DEL GRAFO:
 
@@ -1033,10 +1026,10 @@ STRUTTURA DEL GRAFO:
 
 DEFINIZIONE FORMALE:
 
-  G = (V, E) dove:
-    V = {Genre, Quality, Popularity, Price_Tier, Success}
-    E = {(Genre→Quality), (Genre→Popularity), (Genre→Price_Tier),
-         (Quality→Success), (Popularity→Success), (Price_Tier→Success)}
+  - G = (V, E) dove:
+    - V = {Genre, Quality, Popularity, Price_Tier, Success}
+    - E = {(Genre→Quality), (Genre→Popularity), (Genre→Price_Tier),
+        (Quality→Success), (Popularity→Success), (Price_Tier→Success)}
   
   Il grafo è aciclico (DAG): ✓ Verificato
 
@@ -1044,18 +1037,7 @@ DEFINIZIONE FORMALE:
 
 CPD(Genre): Probabilità a priori
 
-  Genre          Probability
-  ──────────────────────────
-  Action         0.2800
-  RPG            0.1850
-  Strategy       0.1250
-  Indie          0.1550
-  Adventure      0.1050
-  Casual         0.0850
-  Simulation     0.0550
-  Sports         0.0300
-  ──────────────────────────
-  Totale:        1.0000
+![alt text](img/image-4.png)
 
 ### Grafico CPD(Genre): Distribuzione A Priori
 
@@ -1068,13 +1050,13 @@ xychart-beta
 ```
 
 CPD(Quality | Genre): Qualità dato il genere
-![alt text](image.png)
+![alt text](img/image.png)
 
 CPD(Popularity | Genre): Popolarità dato il genere
-![alt text](image-1.png)
+![alt text](img/image-1.png)
 
 CPD(Price_Tier | Genre): Fascia di prezzo dato il genere
-![alt text](image-2.png)
+![alt text](img/image-2.png)
 
 ### Grafico CPD(Price_Tier | Genre): Distribuzione Fasce di Prezzo per Genere
 
@@ -1091,7 +1073,7 @@ xychart-beta
 
 CPD(Success | Quality, Popularity, Price_Tier): Probabilità di successo
 
-![alt text](image-3.png)
+![alt text](img/image-3.png)
 
 
 
@@ -1102,24 +1084,24 @@ Le CPD sono state apprese dai dati utilizzando il metodo Maximum Likelihood Esti
 PROCEDURA:
 
 1. Per ogni combinazione di (Parent_Values):
-     count_success = numero di giochi con quella combinazione che hanno successo
-     count_total = numero totale di giochi con quella combinazione
-     P(Success=Yes | Parents) = count_success / count_total
+     - count_success = numero di giochi con quella combinazione che hanno successo
+     - count_total = numero totale di giochi con quella combinazione
+     - P(Success=Yes | Parents) = count_success / count_total
 
 2. Normalizzazione:
-     P(Success=No | Parents) = 1 - P(Success=Yes | Parents)
+     - P(Success=No | Parents) = 1 - P(Success=Yes | Parents)
 
 ESEMPIO CONCRETO:
 
 Per Genre=Action, Quality=High, Popularity=High, Price_Tier=Budget:
-  count_success = 542 (giochi di successo)
-  count_total = 615 (giochi totali in questa categoria)
-  P(Success=Yes) = 542 / 615 = 0.8813
+  - count_success = 542 (giochi di successo)
+  - count_total = 615 (giochi totali in questa categoria)
+  - P(Success=Yes) = 542 / 615 = 0.8813
 
 GESTIONE DI EVENTI RARI:
 
 Per combinazioni con pochi dati, applico smoothing Laplace:
-  P(X=x | Parents) = (count_x + α) / (count_total + α × |Valori_X|)
+  - P(X=x | Parents) = (count_x + α) / (count_total + α × |Valori_X|)
   
 Dove α = 1 (aggiunge 1 pseudo-count)
 
@@ -1182,49 +1164,49 @@ COMPLESSITÀ:
 
 ## 5.6 Altre Operazioni con la Rete Bayesiana
 
-OPERAZIONE 1: MAP Inference (Maximum A Posteriori)
-  Obiettivo: Trovare l'assegnazione più probabile a variabili non osservate
-  Metodo: Simile a VE ma con max anziché sum
-  Applicazione: Predire genere più probabile dato il successo
+- OPERAZIONE 1: MAP Inference (Maximum A Posteriori)
+  - Obiettivo: Trovare l'assegnazione più probabile a variabili non osservate
+  - Metodo: Simile a VE ma con max anziché sum
+  - Applicazione: Predire genere più probabile dato il successo
 
-OPERAZIONE 2: Sampling
-  Metodo: Forward sampling dalla rete
-  Processo:
+- OPERAZIONE 2: Sampling
+  - Metodo: Forward sampling dalla rete
+  - Processo:
     1. Sample Genre ~ P(Genre)
     2. Sample Quality ~ P(Quality | Genre_value)
     3. Sample Popularity ~ P(Popularity | Genre_value)
     4. Sample Price_Tier ~ P(Price_Tier | Genre_value)
     5. Sample Success ~ P(Success | Quality, Popularity, Price_Tier values)
-  Utilizzo: Generare esempi sintetici credibili
+  - Utilizzo: Generare esempi sintetici credibili
 
-OPERAZIONE 3: Missing Data Imputation
-  Utilizzo: Completare dati mancanti nel dataset
-  Metodo: Inferenza sul valore mancante dato valori osservati
-  Esempio: Se Price_Tier manca, usare E = argmax P(Price_Tier | Genre, Quality)
+- OPERAZIONE 3: Missing Data Imputation
+  - Utilizzo: Completare dati mancanti nel dataset
+  - Metodo: Inferenza sul valore mancante dato valori osservati
+  - Esempio: Se Price_Tier manca, usare E = argmax P(Price_Tier | Genre, Quality)
 
 ## 5.7 Validazione della Rete
 
 VALIDAZIONE 1: Coerenza Strutturale
-  ✓ Grafo è aciclico (DAG)
-  ✓ Tutti gli archi hanno senso causale
-  ✓ Nodi corrispondono a dominio
+  - ✓ Grafo è aciclico (DAG)
+  - ✓ Tutti gli archi hanno senso causale
+  - ✓ Nodi corrispondono a dominio
 
 VALIDAZIONE 2: Validazione delle CPD
-  ✓ Tutte le probabilità in [0,1]
-  ✓ Somme condizionali = 1
-  ✓ Nessun valore NaN o infinito
+  - ✓ Tutte le probabilità in [0,1]
+  - ✓ Somme condizionali = 1
+  - ✓ Nessun valore NaN o infinito
 
 VALIDAZIONE 3: Plausibilità Semantica
-  Test: Controllare se risultati inferenza hanno senso
+  - Test: Controllare se risultati inferenza hanno senso
   
-  Test 1: P(Success | Quality=High) > P(Success | Quality=Low)
-          Risultato: 0.78 > 0.24 ✓
+  - Test 1: P(Success | Quality=High) > P(Success | Quality=Low)
+      - Risultato: 0.78 > 0.24 ✓
   
-  Test 2: P(Success | Popularity=High) > P(Success | Popularity=Low)
-          Risultato: 0.71 > 0.32 ✓
+  - Test 2: P(Success | Popularity=High) > P(Success | Popularity=Low)
+      - Risultato: 0.71 > 0.32 ✓
   
-  Test 3: P(Success | Action) > P(Success | Strategy)
-          Risultato: 0.756 > 0.682 ✓
+  - Test 3: P(Success | Action) > P(Success | Strategy)
+      - Risultato: 0.756 > 0.682 ✓
 
 ---
 
