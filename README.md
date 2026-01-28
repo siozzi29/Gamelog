@@ -124,6 +124,7 @@ Con 800€ puoi acquistare:
 ## Struttura del Progetto
 
 ```
+Gamelog/
 ├── main.py                      # Entry point dell'applicazione
 ├── logic_engine.py              # Knowledge Base (Logica Deduttiva)
 ├── bayesian_learner.py          # Rete Bayesiana (Ragionamento Probabilistico)
@@ -132,12 +133,18 @@ Con 800€ puoi acquistare:
 ├── data_loader.py               # Caricamento dataset Steam
 ├── probabilita.py               # Utilità probabilistiche
 ├── requirements.txt             # Dipendenze Python
-├── data/
+├── README.md                    # Introduzione e setup del progetto
+├── DOCUMENTAZIONE.md            # Relazione tecnica completa
+├── .gitignore                   # Esclusione file non necessari per Git
+├── data/                        # Cartella contenente i dataset
 │   ├── steam.csv                # Dataset principale Steam
-│   └── steam_description_data.csv # Descrizioni dettagliate
-└── tests/
-    ├── test_architettura.py     # Test architettura
-    └── test_prob.py             # Test probabilità
+│   └── steam_description_data.csv # Descrizioni dettagliate dei giochi
+├── img/                         # Cartella assets per le immagini
+│   ├── image.png                # Screenshot e grafici per la documentazione
+│   └── image-1.png ...          # Altri asset visivi
+└── tests/                       # Suite di test automatizzati
+    ├── test_architettura.py     # Validazione integrità dei moduli
+    └── test_prob.py             # Test specifici per la parte Bayesiana
 ```
 
 ---
