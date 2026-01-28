@@ -101,6 +101,37 @@ Il sistema GAMELOG fornisce i seguenti contributi innovativi:
 | 4 | Robustezza | Gestione di incertezza e dati mancanti |
 | 5 | Usabilità | Interfaccia intuitiva per gli utenti finali |
 
+## 0.5 Diagramma dei Paradigmi di Ragionamento Integrati
+
+```mermaid
+graph LR
+    subgraph "GAMELOG Architecture"
+        Input["🎮 User Input<br/>(Genre + Budget)"]
+        
+        Logic["⚡ Logica Deduttiva<br/>Knowledge Base<br/>- Query di fatto<br/>- Regole certe"]
+        
+        Prob["📊 Ragionamento Probabilistico<br/>Rete Bayesiana<br/>- Incertezza<br/>- Confidenza"]
+        
+        CSP["🔧 Ottimizzazione Vincoli<br/>CSP Solver<br/>- Hardware compatibile<br/>- Ranking multi-criterio"]
+        
+        Output["🏆 Output Finale<br/>(Titoli + Probabilità<br/>+ Config Hardware)"]
+        
+        Input --> Logic
+        Input --> Prob
+        Input --> CSP
+        
+        Logic --> Output
+        Prob --> Output
+        CSP --> Output
+    end
+    
+    style Logic fill:#7ED321,stroke:#4A8A1A,color:#000
+    style Prob fill:#F5A623,stroke:#C67E0E,color:#000
+    style CSP fill:#BD10E0,stroke:#7A0A7A,color:#fff
+    style Output fill:#50E3C2,stroke:#2A8B7B,color:#000
+    style Input fill:#4A90E2,stroke:#2E5C8A,color:#fff
+```
+
 ## 0.5 Struttura del Documento
 
 La presente documentazione è organizzata come segue:
@@ -247,6 +278,49 @@ Il sistema è organizzato secondo un'architettura a strati (layered architecture
 │                  PERSISTENCE LAYER                          │
 │            (CSV Files, Knowledge Base Storage)              │
 └─────────────────────────────────────────────────────────────┘
+```
+
+### Diagramma Architetturale Interattivo (Mermaid)
+
+```mermaid
+graph TD
+    User["🎮 Utente"]
+    CLI["CLI Interface"]
+    Main["main.py<br/>Orchestration"]
+    
+    KB["Logic Engine<br/>Knowledge Base"]
+    BN["Bayesian Learner<br/>Rete Bayesiana"]
+    CSP["Hardware CSP<br/>Optimizer"]
+    
+    DL["Data Loader<br/>Preprocessing"]
+    
+    CSV[("Database<br/>CSV Files")]
+    
+    Output["🎮 Output<br/>Raccomandazioni"]
+    
+    User --> CLI
+    CLI --> Main
+    
+    Main --> KB
+    Main --> BN
+    Main --> CSP
+    
+    KB --> DL
+    BN --> DL
+    CSP --> DL
+    
+    DL --> CSV
+    
+    KB --> Output
+    BN --> Output
+    CSP --> Output
+    Output --> User
+    
+    style Main fill:#4A90E2,stroke:#2E5C8A,color:#fff
+    style KB fill:#7ED321,stroke:#4A8A1A,color:#fff
+    style BN fill:#F5A623,stroke:#C67E0E,color:#fff
+    style CSP fill:#BD10E0,stroke:#7A0A7A,color:#fff
+    style Output fill:#50E3C2,stroke:#2A8B7B,color:#fff
 ```
 
 ## 2.2 Moduli Principali
@@ -552,6 +626,38 @@ Categorizzazione per fascia:
 - **Std Dev:** €18.32
 - **Min/Max:** €0.00 - €99.99
 
+### Grafici Statistici Principali
+
+#### Grafico 1: Distribuzione Titoli e Rating Medio per Genere (Top 10)
+
+```mermaid
+xychart-beta
+    title "Distribuzione Titoli per Genere (Top 10)"
+    x-axis [Action, Indie, Adventure, Casual, RPG, Strategy, Simulation, Puzzle, Sports, Utils]
+    y-axis "Numero Titoli" 0 --> 3500
+    line [3240, 2987, 2145, 1897, 1654, 1320, 1105, 985, 847, 756]
+```
+
+#### Grafico 2: Rating Medio per Genere
+
+```mermaid
+xychart-beta
+    title "Rating Medio per Genere (Ordinato)"
+    x-axis [Strategy, RPG, Adventure, Action, Simulation, Indie, Casual, Sports, Puzzle, Utils]
+    y-axis "Rating Medio" 0 --> 10
+    bar [7.85, 7.62, 7.45, 7.23, 7.15, 6.95, 6.42, 6.18, 6.05, 5.82]
+```
+
+#### Grafico 3: Price Tier Distribution (Distribuzione Fasce di Prezzo)
+
+```mermaid
+pie title "Distribuzione Fasce di Prezzo dei Titoli"
+    "Budget (€0-€10): 45.2%" : 45.2
+    "Economy (€10-€30): 38.7%" : 38.7
+    "Standard (€30-€60): 12.1%" : 12.1
+    "Premium (€60+): 4.0%" : 4.0
+```
+
 ### COMPLETEZZA FEATURE
 
 | Feature | Complete | Completeness |
@@ -843,6 +949,31 @@ Inferenza bayesiana:
 
 ## 5.2 Struttura della Rete Bayesiana
 
+### Visualizzazione Grafica della Rete Bayesiana
+
+```mermaid
+graph TD
+    Genre["🎮 Genre<br/>(Prior Probability)"]
+    Quality["⭐ Quality<br/>(Rating Distribution)"]
+    Popularity["📊 Popularity<br/>(Review Count)"]
+    Price["💰 Price_Tier<br/>(Fascia Prezzo)"]
+    Success["🏆 Success<br/>(Y/N Commercial)"]
+    
+    Genre --> Quality
+    Genre --> Popularity
+    Genre --> Price
+    
+    Quality --> Success
+    Popularity --> Success
+    Price --> Success
+    
+    style Genre fill:#E8F4F8,stroke:#4A90E2,stroke-width:2px,color:#000
+    style Quality fill:#E8F4F8,stroke:#4A90E2,stroke-width:2px,color:#000
+    style Popularity fill:#E8F4F8,stroke:#4A90E2,stroke-width:2px,color:#000
+    style Price fill:#E8F4F8,stroke:#4A90E2,stroke-width:2px,color:#000
+    style Success fill:#FFF4E6,stroke:#F5A623,stroke-width:3px,color:#000
+```
+
 NODI DELLA RETE:
 
 Nodo 1: Genre
@@ -926,64 +1057,43 @@ CPD(Genre): Probabilità a priori
   ──────────────────────────
   Totale:        1.0000
 
+### Grafico CPD(Genre): Distribuzione A Priori
+
+```mermaid
+xychart-beta
+    title "CPD(Genre): Probabilità A Priori P(Genre)"
+    x-axis [Action, Indie, RPG, Strategy, Adventure, Casual, Simulation, Sports]
+    y-axis "Probabilità" 0 --> 0.35
+    bar [0.280, 0.155, 0.185, 0.125, 0.105, 0.085, 0.055, 0.030]
+```
+
 CPD(Quality | Genre): Qualità dato il genere
-
-Questo è una tabella di probabilità condizionata di dimensione 3×8:
-
-                 Action  RPG    Strategy Indie  Adventure Casual Simul. Sports
-  Quality
-  ──────────────────────────────────────────────────────────────────────────
-  High           0.350   0.320  0.400   0.280  0.380    0.220  0.320  0.250
-  Medium         0.450   0.480  0.380   0.500  0.420    0.450  0.480  0.400
-  Low            0.200   0.200  0.220   0.220  0.200    0.330  0.200  0.350
-  ──────────────────────────────────────────────────────────────────────────
+![alt text](image.png)
 
 CPD(Popularity | Genre): Popolarità dato il genere
-
-  Tabella 3×8 (simile a Quality):
-                 Action  RPG    Strategy Indie  Adventure Casual Simul. Sports
-  ──────────────────────────────────────────────────────────────────────────
-  High           0.400   0.350  0.250   0.200  0.280    0.150  0.200  0.320
-  Medium         0.450   0.500  0.450   0.450  0.450    0.450  0.450  0.380
-  Low            0.150   0.150  0.300   0.350  0.270    0.400  0.350  0.300
+![alt text](image-1.png)
 
 CPD(Price_Tier | Genre): Fascia di prezzo dato il genere
+![alt text](image-2.png)
 
-  Tabella 4×8:
-                 Action  RPG    Strategy Indie  Adventure Casual Simul. Sports
-  ──────────────────────────────────────────────────────────────────────────
-  Budget         0.450   0.380  0.450   0.550  0.420    0.600  0.380  0.400
-  Economy        0.380   0.420  0.350   0.300  0.380    0.250  0.380  0.380
-  Standard       0.130   0.140  0.140   0.110  0.140    0.100  0.160  0.140
-  Premium        0.040   0.060  0.060   0.040  0.060    0.050  0.080  0.080
+### Grafico CPD(Price_Tier | Genre): Distribuzione Fasce di Prezzo per Genere
+
+```mermaid
+xychart-beta
+    title "CPD(Price_Tier | Genre): Distribuzione Fasce di Prezzo per Genere"
+    x-axis [Action, RPG, Strategy, Indie, Adventure, Casual, Simulation, Sports]
+    y-axis "Probabilità" 0 --> 0.7
+    line "Budget" [0.450, 0.380, 0.450, 0.550, 0.420, 0.600, 0.380, 0.400]
+    line "Economy" [0.380, 0.420, 0.350, 0.300, 0.380, 0.250, 0.380, 0.380]
+    line "Standard" [0.130, 0.140, 0.140, 0.110, 0.140, 0.100, 0.160, 0.140]
+    line "Premium" [0.040, 0.060, 0.060, 0.040, 0.060, 0.050, 0.080, 0.080]
+```
 
 CPD(Success | Quality, Popularity, Price_Tier): Probabilità di successo
 
-Questa è una tabella multidimensionale 2×3×3×4:
+![alt text](image-3.png)
 
-  Quando Quality=High, Popularity=High:
-  ──────────────────────────────────────────
-  Price_Tier    P(Success=Yes)
-  Budget         0.880
-  Economy        0.830
-  Standard       0.820
-  Premium        0.780
 
-  Quando Quality=Medium, Popularity=Medium:
-  ──────────────────────────────────────────
-  Price_Tier    P(Success=Yes)
-  Budget         0.520
-  Economy        0.480
-  Standard       0.450
-  Premium        0.380
-
-  Quando Quality=Low, Popularity=Low:
-  ──────────────────────────────────────────
-  Price_Tier    P(Success=Yes)
-  Budget         0.180
-  Economy        0.150
-  Standard       0.120
-  Premium        0.080
 
 ## 5.4 Apprendimento delle Probabilità
 
@@ -1228,14 +1338,27 @@ Per un CSP con treewidth `w`:
   - **Risultato:** O(5 × 45³ × 5) ≈ O(22,968,750) nel worst case
   - **Pratica con forward checking:** ~10,000-50,000 operazioni
 
-### Decomposizione dell'Albero
+### Decomposizione dell'Albero e Constraint Graph
 
-```
-        {CPU, RAM, GPU}
-              |
-         _____|_____
-        |           |
-   {GPU, PSU}   {RAM, SSD}
+```mermaid
+graph TD
+    CPU["💻 CPU<br/>AMD/Intel"]
+    RAM["🧠 RAM<br/>DDR4/DDR5"]
+    GPU["🎨 GPU<br/>NVIDIA/AMD"]
+    SSD["💾 SSD<br/>NVMe"]
+    PSU["⚡ PSU<br/>750W+"]
+    
+    CPU -- Socket --> RAM
+    CPU -- Power --> PSU
+    GPU -- Power --> PSU
+    GPU -- Memory Bus --> RAM
+    SSD -- Interface --> RAM
+    
+    style CPU fill:#E3F2FD,stroke:#1976D2
+    style RAM fill:#F3E5F5,stroke:#7B1FA2
+    style GPU fill:#FCE4EC,stroke:#C2185B
+    style SSD fill:#E0F2F1,stroke:#00796B
+    style PSU fill:#FFF3E0,stroke:#E65100
 ```
 
 Questa decomposizione riduce lo spazio di ricerca mediante dynamic programming.
@@ -1252,11 +1375,10 @@ Oltre ai vincoli hard (must-satisfy), abbiamo soft constraints (preferenze):
 | Rumorosità | 0.1 | `cost = noise_level / 100` |
 
 **Funzione Obiettivo Multi-Peso:**
-```
-total_cost = Σ weight_i × cost_i
 
-best_config = argmin(total_cost) for all valid configs
-```
+$$\text{total\_cost} = \sum_i w_i \times c_i$$
+
+$$\text{best\_config} = \underset{c \in \text{valid}}{\arg\min} \text{total\_cost}(c)$$
 
 ## 6.3 Analisi di Sensitività
 
@@ -1271,6 +1393,27 @@ Vediamo come varia la soluzione al variare dei parametri:
 | 1200 | 12 | 7.5-8.7 | €1150-€1195 |
 | 1800 | 18 | 8.5-9.5 | €1750-€1795 |
 | 2500 | 25 | 9.0-9.8 | €2400-€2495 |
+
+### Grafico: Variazione Soluzioni e Performance al Variare del Budget
+
+```mermaid
+xychart-beta
+    title CSP - Numero di Soluzioni vs Budget
+    x-axis [500, 800, 1200, 1800, 2500]
+    y-axis "Soluzioni" 0 --> 30
+    line [2, 8, 12, 18, 25]
+```
+
+### Grafico: Performance Range al Variare del Budget
+
+```mermaid
+xychart-beta
+    title CSP - Performance Range per Budget
+    x-axis [500, 800, 1200, 1800, 2500]
+    y-axis "Score" 0 --> 10
+    line "Min" [5.2, 6.8, 7.5, 8.5, 9.0]
+    line "Max" [6.8, 8.1, 8.7, 9.5, 9.8]
+```
 
 **Insights:**
 - Ritorni decrescenti dopo €1800 (plateau di performance)
@@ -1555,6 +1698,17 @@ Scaling Factor: Sublineare (log-lineare)
 Sostenibilità: Fino a 100K games con 8GB RAM
 ```
 
+### Grafico: Performance Scaling con Dataset Size
+
+```mermaid
+xychart-beta
+    title "GAMELOG: Scalabilità con Dimensione Dataset"
+    x-axis [5K, 10K, 25K, 50K]
+    y-axis "Query Time (ms)" 0 --> 600
+    line "Query Time" [85, 142, 287, 512]
+    line "Load Time (s×100)" [210, 430, 1070, 2150]
+```
+
 ### Test 3: Accuracy Under Uncertainty
 
 Quando aggiungiamo rumore ai dati:
@@ -1570,6 +1724,17 @@ Rumore % | Accuracy (Logic) | Accuracy (Prob) | System Stability |
 | 25% | 75% | 67% | Non raccomandata |
 
 Conclusione: Sistema robusto fino a 15% di incertezza
+```
+
+### Grafico: Robustezza del Sistema al Variare dell'Incertezza
+
+```mermaid
+xychart-beta
+    title GAMELOG - Robustezza con Rumore nei Dati
+    x-axis [0, 5, 10, 15, 20, 25]
+    y-axis "Accuratezza" 60 --> 100
+    line "Logic" [98, 96, 92, 88, 82, 75]
+    line "Probabilistic" [82, 80, 78, 75, 71, 67]
 ```
 
 ---
@@ -1840,7 +2005,7 @@ Validity:         96/100 ✓
 <a name="capitolo-11"></a>
 # Capitolo 11: Roadmap Tecnica Dettagliata
 
-## 12.1 Q1 2025: Fase 1 - Real-time Integration
+## 12.1 Q1 2026: Fase 1 - Real-time Integration
 
 ### Milestone 1.1: Steam API Wrapper (Week 1-2)
 
@@ -1857,6 +2022,7 @@ Metrics:
   - Memory footprint: < 50MB
 ```
 
+
 ### Milestone 1.2: Incremental Dataset Update (Week 3-4)
 
 ```
@@ -1872,7 +2038,7 @@ Performance:
   - Downtime: < 5 minutes
 ```
 
-## 12.2 Q2 2025: Fase 2 - User Personalization
+## 12.2 Q2 2026: Fase 2 - User Personalization
 
 ### Milestone 2.1: User Profile System (Week 5-6)
 
@@ -1912,7 +2078,7 @@ recommendation_score(user, game) =
   Σ_similar_users weight(similarity) × rating(user, game)
 ```
 
-## 12.3 Q3-Q4 2025: Fase 3 - Web/Mobile Platform
+## 12.3 Q3-Q4 2026: Fase 3 - Web/Mobile Platform
 
 ### Technology Stack
 
