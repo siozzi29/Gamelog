@@ -13,6 +13,7 @@
 - [Capitolo 5: Rete Bayesiana](#capitolo-5)
 - [Capitolo 6: CSP e Ottimizzazione](#capitolo-6)
 - [Capitolo 7: Risultati e Deployment](#capitolo-7)
+- [Capitolo 8: Deployment, Metriche e Conclusioni](#capitolo-8)
 - [Riferimenti bibliografici](#riferimenti-bibliografici)
 
 ---
