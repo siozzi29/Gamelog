@@ -7,6 +7,8 @@ Simone Iozzi, MAT 796970, s.iozzi@studenti.uniba.it
 
 Armando Franchini, MAT 798247, a.franchini24@studenti.uniba.it
 
+**Repository:** https://github.com/siozzi29/Gamelog
+
 **Corso:** Ingegneria della Conoscenza | **A.A.:** 2025-2026
 
 ## Indice
