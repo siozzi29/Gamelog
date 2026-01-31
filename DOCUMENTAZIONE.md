@@ -1,5 +1,5 @@
 # GAMELOG
-## Sistema Intelligente di Raccomandazione Videogiochi e Hardware
+## Sistema di Supporto alle Decisioni per Configurazioni Hardware e Software.
 
 **Autori:**
 
@@ -29,7 +29,7 @@ Armando Franchini, MAT 798247, a.franchini24@studenti.uniba.it
 
 ## Panoramica
 
-GAMELOG integra tre paradigmi di ragionamento per fornire raccomandazioni personalizzate:
+GAMELOG integra tre paradigmi di ragionamento per fornire supporto alle Decisioni per Configurazioni Hardware e Software.
 - **Ragionamento Logico Deduttivo:** Knowledge Base con regole certe
 - **Ragionamento Probabilistico:** Rete Bayesiana per gestire incertezza
 - **Ottimizzazione:** CSP Solver per trovare configurazioni hardware ottimali
@@ -611,417 +611,60 @@ Adatto per: Indie games, eSports (CS:GO, Valorant)
 <a name="capitolo-7"></a>
 # Capitolo 7: Case Study e Benchmark Comparativi
 
-## 7.1 Case Study 1: Gamer Casual Budget Limitato
+## 7.1 Scelte Architetturali (motivazione operativa)
 
-**Profilo Utente:**
-- Genere preferito: Indie
-- Budget disponibile: €500
-- Requisiti: Affidabilità, silenziosità, giochi 2D/pixel art
-- Esperienza: Giocatore occasionale
+- **CSP come nucleo**: il requisito centrale è rispettare vincoli hard di compatibilità hardware. La ricerca con vincoli riduce lo spazio combinatorio e garantisce soluzioni valide prima del ranking.
+- **Logica deduttiva**: serve per inferire relazioni non direttamente presenti (es. colli di bottiglia CPU/GPU) e per filtrare titoli con regole esplicite e verificabili.
+- **Rete Bayesiana**: usata solo per stimare $P(\text{Successo} \mid \text{Genere})$ con output probabilistico; non guida la scelta hardware ma integra l’incertezza nel flusso decisionale.
 
-**Esecuzione GAMELOG:**
+## 7.2 Valutazione quantitativa (Cross-Validation)
 
-**[00:02] Bayesian Inference - Stima di Successo**
-```
-Query: P(Success=Yes | Genre=Indie)
+Le metriche probabilistiche sono riportate in forma media ± deviazione standard, come in tabella. I valori reali vanno inseriti dopo l’esecuzione della CV sul dataset corrente.
 
-Inference Results:
-  P(Success=Yes | Indie) = 0.82
-  P(Success=No  | Indie) = 0.18
-  
-  Confidence Interval (95%): [0.78, 0.86]
-  Brier Score: 0.15
-  
-Interpretazione: Il genere Indie ha ALTA affidabilità
-- Titoli Indie hanno 82% di probabilità di essere graditi
-- Distribuzione molto concentrata attorno a media alta
-- Genere STABILE e PREVEDIBILE
-```
+| Modello | CV folds | Accuracy (mean ± std) | Brier Score (mean ± std) |
+|--------|----------|------------------------|---------------------------|
+| Bayesian Network (pgmpy) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| Logistic Regression | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| Decision Tree | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| KNN (k=5) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| Neural Network (MLP) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| Naive Bayes | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
 
-**[00:02] CSP Resolution - Configurazione Hardware**
-```
-Query: find_hardware_configs(budget=500, genre="Indie")
-
-Soluzioni trovate: 3 configurazioni valide
-
-CONFIG 1: ENTRY LEVEL OTTIMALE ✓✓✓
-─────────────────────────────────────
-  CPU: AMD Ryzen 3 4100 (iGPU Vega)
-       Prezzo: €100
-       TDP: 65W (silenzioso)
-       
-  RAM: 8GB DDR4 3200MHz
-       Prezzo: €50
-       
-  SSD: 256GB NVMe M.2
-       Prezzo: €35
-       
-  PSU: 450W 80+ Bronze
-       Prezzo: €40
-       
-  ─────────────────────────────────
-  TOTALE HARDWARE: €225
-  MARGINE PER MONITOR: €275
-  Performance: 5.8/10
-  
-  ✓ Perfetto per Indie 2D
-  ✓ Grafica integrata sufficiente
-  ✓ Silenziosissimo (no GPU dedicata)
-  ✓ Eccellente consumo energetico
-```
-
-## 7.3 Benchmark Comparativi: GAMELOG vs Sistemi Alternativi
-
-### Test 1: Ricerca Manuale Online (Baseline)
-
-```
-Processo Tipico:
-┌─────────────────────────────────────────┐
-│ 1. Google "best PC for indie games"     │ 10 min
-│ 2. Leggi articoli blog (3-5 articoli)   │ 15 min
-│ 3. Controlla reddit/forum               │ 10 min
-│ 4. Confronta prezzi su Amazon/eShop     │ 10 min
-│ 5. Verifica compatibilità componenti    │ 5 min
-└─────────────────────────────────────────┘
-TEMPO TOTALE: 50 minuti
-
-Risultati:
-- Accuratezza: 58% (dipende da ricerca)
-- Trasparenza: 40% (tante opinioni diverse)
-- Vincoli hard: No (trascurati)
-- Costo utente: Alto (tempo + energy)
-```
-
-### Test 2: Recommender System Statistico Puro
-
-```
-Approccio: Collaborative filtering + ranking
-
-Algoritmo: Content-based filtering
-Tempo: 180ms
-Accuratezza: 74% (ranking solo)
-
-Problemi:
-- ✗ No constraint satisfaction
-- ✗ No hardware compatibility check
-- ✗ Probabilità non calibrate (Brier score 0.32)
-- ✗ Black-box (no spiegazione)
-- ✗ Instabile su dati nuovi
-
-Output tipico:
-[Titolo1 (score 0.89), Titolo2 (score 0.87), ...]
-Nessuna config hardware
-Nessun intervallo di confidenza
-```
-
-### Test 3: GAMELOG (Nostro Sistema)
-
-```
-Approccio: Multi-paradigma (Logica + Probabilità + CSP)
-Tempo: 487ms
-Accuratezza: 98% (logica) + 82% (probabilistica)
-
-Vantaggi:
-✓ Trasparenza totale (spiegazione ogni step)
-✓ Multi-paradigma (logica + probabilità + vincoli)
-✓ Vincoli hard garantiti (compatibilità verificate)
-✓ Ranking multi-criterio (performance/prezzo/etc)
-✓ Intervalli di confidenza e calibrazione
-✓ Robusto a dati mancanti (handling incertezza)
-
-Output:
-- Top 5 titoli (with success scores)
-- P(Successo|Genere) ± intervallo di confidenza
-- 3-8 config hardware (ordinata)
-- Spiegazione dettagliata per ogni scelta
-- Motivazione basata su logica + probabilità
-```
-
-### Tabella Comparativa
-
-| Metrica | Manuale | Statistical | GAMELOG |
-|---------|---------|------------|---------|
-| **Tempo** | 50 min | 180ms | 487ms |
-| **Accuratezza** | 58% | 74% | 98% |
-| **Trasparenza** | 100% | 5% | 95% |
-| **Vincoli Hard** | No | No | ✓ |
-| **Scalabilità** | Bassa | Alta | Alta |
-| **User Satisfaction** | 72% | 68% | 94% |
-| **Costo Setup** | €0 | €/API | €server |
-| **Calibrazione** | N/A | Brier 0.32 | Brier 0.18 |
-
-### Grafico Comparativo - Accuratezza vs Tempo
-
-```mermaid
-quadrantChart
-    title Confronto Sistemi - Accuratezza vs Tempo
-    x-axis "Lento" --> "Veloce"
-    y-axis "Bassa Accuratezza" --> "Alta Accuratezza"
-    quadrant-1 "Ideale"
-    quadrant-2 "Lento ma Accurato"
-    quadrant-3 "Inadeguato"
-    quadrant-4 "Veloce ma Impreciso"
-    Ricerca Manuale: [0.02, 0.58]
-    Collaborative Filtering: [0.85, 0.74]
-    GAMELOG Sistema: [0.80, 0.98]
-```
-
-## 7.4 Stress Testing Results
-
-### Test 1: Carico Concorrente
-
-```
-Test Configuration:
-- 50 richieste simultanee
-- 5 minuti durata
-- Mix: 40% query titoli, 40% query hardware, 20% inferenza
-
-Risultati:
-┌──────────────────────────────────────────┐
-│ Tempo medio/richiesta: 512ms (+5% vs     │
-│ Memoria picco: 2.3GB (+15% da baseline)  │
-│ CPU media: 78% (4 core i7)               │
-│ Cache hit rate: 92%                      │
-│ Timeout: 0 (nessuno)                     │
-│ Errori: 0 (nessuno)                      │
-│ P95 latency: 580ms                       │
-│ P99 latency: 620ms                       │
-└──────────────────────────────────────────┘
-
-Conclusione: Sistema stabile sotto carico
-Throughput massimo: 100 req/min sostenute
-```
+**Nota:** la Cross-Validation è implementata con KFold e smoothing per gestire stati non visti nel train. I risultati sono riproducibili con gli stessi seed.
 
 ---
 
 <a name="capitolo-8"></a>
 # Capitolo 8: Deployment, Metriche e Conclusioni
 
-## 8.1 Performance Metrics Dettagliati
+## 8.1 Conclusioni tecniche
 
-**KPI Sistema:**
-- Response Time (p95): 512ms ✓✓ (target < 600ms)
-- Knowledge Base Accuracy: 98% ✓✓ (target > 95%)
-- Probabilistic Calibration (Brier Score): 0.18 ✓✓ (target < 0.20)
-- CSP Solution Coverage: 89.4% ✓✓ (target > 85%)
-- System Availability: 99.2% ✓✓ (target > 99%)
-- Memory Usage (avg): 2.0GB ✓ (target < 2.5GB)
-- Cache Hit Rate: 92% ✓✓ (target > 85%)
+Il progetto è un **Sistema di Supporto alle Decisioni con Vincoli**: la parte centrale è il CSP, mentre la logica fornisce inferenza simbolica e la rete bayesiana fornisce una stima probabilistica separata.
 
-**KPI Utente:**
-- User Satisfaction: 94% ✓✓ (target 90%)
-  - Very Satisfied: 72%
-  - Satisfied: 22%
-  - Neutral: 4%
-  - Unsatisfied: 2%
+**Punti solidi (verificabili):**
+- Vincoli hard applicati prima del ranking: nessuna configurazione hardware invalida.
+- Regole logiche per inferenze non esplicite (es. colli di bottiglia CPU/GPU).
+- Stima probabilistica calibrata tramite Brier Score in CV.
 
-- Recommendation Adoption: 87% ✓✓ (target > 75%)
-  - Configurazione hardware acquistata: 87%
-  - Titolo giocato entro 1 mese: 91%
+## 8.2 Limiti del sistema (reali)
 
-- Re-engagement Rate: 64% ✓✓ (target > 50%)
-  - Utenti tornano per nuova query: 64%
-  - Query medie per utente: 2.3
+- **Discretizzazione**: la qualità della stima bayesiana dipende da soglie (rating, price tier) non ottimali per tutti i generi.
+- **Feature set ridotto**: il modello probabilistico usa poche variabili; non cattura dinamiche temporali né segnali testuali.
+- **Sensibilità al dataset**: le regole logiche assumono completezza dei dati; errori/valori mancanti influenzano le query.
+- **Portabilità limitata**: i vincoli CSP sono specifici del dominio hardware definito nel progetto.
 
-## 8.2 Configurazione Deployment Produzione
+## 8.3 Risultati sintetici (Cross-Validation)
 
-**Setup Configuration:**
-```yaml
-system:
-  python_version: 3.13.0
-  memory_allocation: 4GB
-  threads: 4
-  max_workers: 4
-  
-data:
-  dataset_path: /data/steam.csv
-  cache_enabled: true
-  cache_ttl: 86400  # 24 ore
+| Modello | CV folds | Accuracy (mean ± std) | Brier Score (mean ± std) |
+|--------|----------|------------------------|---------------------------|
+| Bayesian Network (pgmpy) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| Logistic Regression | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| Decision Tree | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| KNN (k=5) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| Neural Network (MLP) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| Naive Bayes | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
 
-knowledge_base:
-  precompile_indexes: true
-  batch_load_size: 5000
-  index_type: "btree"
-
-bayesian:
-  inference_method: variable_elimination
-  max_query_time: 500ms
-  smoothing_alpha: 1.0  # Laplace smoothing
-
-csp:
-  timeout: 10000ms
-  max_solutions: 50
-  pruning_strategy: forward_checking
-  variable_ordering: mrv  # Minimum Remaining Values
-  
-api:
-  rate_limit: 100req/min
-  response_timeout: 5000ms
-  error_handling: graceful_degradation
-  
-monitoring:
-  log_level: INFO
-  metrics_export: prometheus
-  health_check_interval: 30s
-```
-
-**Manutenzione Dataset - Weekly Cycle:**
-```
-Lunedì 00:00 UTC:
-  ✓ Scarica dati nuovi da Steam API
-  ✓ Validazione integrità
-  ✓ Rilevamento anomalie (Z-score threshold=3.0)
-  ✓ Merge con dataset esistente
-
-Lunedì 06:00 UTC:
-  ✓ Ricomputa success_score
-  ✓ Aggiorna statistiche generi
-  ✓ Retrain Rete Bayesiana (CPD)
-  ✓ Ricostruisci indici KB
-
-Lunedì 12:00 UTC:
-  ✓ Esegui test comprensivi
-  ✓ Confronta metriche vs settimana precedente
-  ✓ Se degradazione > 5%: rollback versione precedente
-  ✓ Deploy nuova versione in produzione
-
-Downtime atteso: 12 minuti
-Data freshness: < 7 giorni
-Success rate: 99.2%
-```
-
-## 8.3 Requisiti Hardware e Software
-
-**Hardware Minimo:**
-- CPU: 4-core @ 2.4GHz (es: Ryzen 3 4100)
-- RAM: 4GB DDR4
-- Storage: 1GB SSD (+ dataset)
-- Network: 100Mbps
-
-**Hardware Consigliato:**
-- CPU: 8+ core @ 3.5GHz (es: i7-13700K)
-- RAM: 16GB DDR4/DDR5
-- Storage: SSD NVMe 1TB
-- Network: Gigabit Ethernet
-
-**Dipendenze Software:**
-```
-Python 3.13.0+
-  pandas==2.1.0          # Manipolazione dati
-  numpy==1.24.0          # Operazioni numeriche
-  scikit-learn==1.3.0    # Machine learning
-  pgmpy==0.1.23          # Reti Bayesiane
-  python-constraint==1.4 # CSP Solver
-  matplotlib==3.8.0      # Visualizzazione
-  pytest==7.4.0          # Testing
-```
-
-## 8.4 Installazione e Utilizzo
-
-**Setup Rapido:**
-```bash
-# Clone repository
-git clone https://github.com/simone/gamelog.git
-cd gamelog
-
-# Crea virtual environment
-python -m venv venv
-source venv/bin/activate  # Linux/macOS
-# oppure
-.\venv\Scripts\Activate.ps1  # Windows
-
-# Installa dipendenze
-pip install -r requirements.txt
-
-# Scarica dataset (~200MB)
-python download_dataset.py
-
-# Esegui sistema
-python main.py --genre Action --top 5
-python main.py --hardware --budget 800
-python main.py --genre RPG --budget 1500 --all-recommendations
-```
-
-**Esempi di Utilizzo:**
-```bash
-# Query 1: Top 5 titoli Action
-python main.py --genre Action --top 5
-
-# Query 2: Configurazioni hardware con budget
-python main.py --hardware --budget 800 --count 3
-
-# Query 3: Stima di successo per genere
-python main.py --predict --genre RPG
-
-# Query 4: Ricerca completa
-python main.py --genre Indie --budget 500 --all-recommendations
-
-# Query 5: Test sistema
-python main.py --test --verbose
-```
-
-## 8.5 Conclusioni
-
-**GAMELOG - Risultati Finali:**
-
-GAMELOG implementa con successo un sistema multi-paradigma che integra:
-1. **Ragionamento Logico Deduttivo** - Knowledge Base con pyDatalog
-2. **Ragionamento Probabilistico** - Rete Bayesiana con pgmpy
-3. **Ottimizzazione con Vincoli** - CSP Solver per hardware
-
-**Performance Raggiunta:**
-- Accuratezza: 98% (logica) + 82% (probabilistica)
-- Tempi risposta: < 500ms in p95
-- Trasparenza: Spiegazione completa ogni raccomandazione
-- Scalabilità: 100K titoli con 8GB RAM
-- Robustezza: Stabile con < 15% rumore dati
-
-**Vantaggi Chiave:**
-✓ Determinismo logico (stesso input → stesso output)
-✓ Gestione dell'incertezza (Bayesian calibration)
-✓ Vincoli hard garantiti (compatibility checking)
-✓ Ranking multi-criterio (performance, prezzo, etc)
-✓ Spiegabilità (XAI - explainable AI)
-
-**Limitazioni:**
-- Setup iniziale complesso (training Bayesian network)
-- Manutenzione KB richiede expertise dominio
-- Dipendenza dalla qualità dati di input
-- Scalabilità spaziale al di sopra di 100K titoli
-
-**Sviluppi Futuri:**
-- Integrazione Steam API real-time
-- User profiling con preferenze persistenti
-- Collaborative filtering integrato
-- Modelli temporali dinamici (trend tracking)
-- Piattaforma web (React) + mobile (React Native)
-- Backend scalabile (FastAPI + PostgreSQL + Redis)
-
-**Dataset Health: 94/100**
-- Completeness: 98% ✓
-- Consistency: 95% ✓
-- Freshness: 93% (weekly updates)
-- Validity: 96% ✓
-
-### Dashboard Metriche KPI Sistema
-
-```mermaid
-quadrantChart
-    title KPI Dashboard - Performance vs Target
-    x-axis "Sotto Target" --> "Sopra Target"
-    y-axis "Bassa Priorità" --> "Alta Priorità"
-    quadrant-1 "Eccellente ⭐"
-    quadrant-2 "Critico ⚠️"
-    quadrant-3 "Accettabile ✓"
-    quadrant-4 "Da Migliorare 📈"
-    Response Time p95: [0.85, 0.90]
-    KB Accuracy: [0.98, 0.95]
-    Brier Score: [0.90, 0.85]
-    CSP Coverage: [0.89, 0.75]
-    Availability: [0.99, 0.98]
-    User Satisfaction: [0.94, 0.92]
-    Cache Hit Rate: [0.92, 0.80]
-```
+Questa tabella è il riferimento per la comparazione: nessun indicatore “marketing”, solo metriche standardizzate su CV.
 
 ---
 # Riferimenti bibliografici
@@ -1035,7 +678,7 @@ quadrantChart
 - scikit-learn Documentation (ML utilities): https://scikit-learn.org/
 
 ---
-**Fine Documentazione GAMELOG - Sistema Intelligente di Raccomandazione Videogiochi e Hardware**
+**Fine Documentazione GAMELOG - Sistema di Supporto alle Decisioni per Configurazioni Hardware e Software.**
 
 
 

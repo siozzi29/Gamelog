@@ -1,9 +1,20 @@
+import argparse
 import data_loader
 import bayesian_learner
 import logic_engine
 import hardware_optimizer
 
 def main():
+    parser = argparse.ArgumentParser(description="GAMELOG - Sistema di Supporto alle Decisioni")
+    parser.add_argument("--cross-validate", action="store_true", help="Esegue K-Fold CV sulla rete bayesiana")
+    parser.add_argument("--k", type=int, default=5, choices=[5, 10], help="Numero di fold (5 o 10)")
+    args = parser.parse_args()
+
+    if args.cross_validate:
+        print("--- K-Fold Cross-Validation (Rete Bayesiana) ---")
+        bayesian_learner.cross_validate_bayesian_network(k=args.k)
+        return
+
     print("="*30)
     print(" GAMELOG - STARTUP ")
     print("="*30)
