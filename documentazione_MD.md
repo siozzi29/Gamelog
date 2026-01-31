@@ -274,6 +274,13 @@ INPUT UTENTE
         └──────────────┘
 ```
 
+## 2.6 Validazione Strutturale e Testing
+
+Per garantire la robustezza dell'architettura e la correttezza matematica dei modelli, il sistema include una suite di **test di integrità** (situati nella directory `tests/`):
+
+- **`test_architettura.py`**: Verifica la corretta istanziazione dei nodi del grafo e la coerenza delle importazioni tra i moduli, prevenendo dipendenze circolari e garantendo che le interfacce tra i livelli siano rispettate.
+- **`test_prob.py`**: Valida matematicamente le **CPD** (Conditional Probability Distributions) della Rete Bayesiana, assicurando che la somma delle probabilità per ogni stato condizionato sia strettamente uguale a 1.0 (rispetto dell'assioma di normalizzazione), evitando errori di inferenza a runtime.
+
 ---
 
 <a name="capitolo-3"></a>
