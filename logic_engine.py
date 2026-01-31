@@ -82,8 +82,9 @@ def setup_logic():
     # Regola di collo di bottiglia: CPU Entry + GPU High
     is_bottleneck(C, G) <= cpu_fascia(C, "Entry") & gpu_fascia(G, "High")
 
-    # Regola alternativa: differenza anno rilascio > 4 anni
-    is_bottleneck(C, G) <= cpu_year(C, YC) & gpu_year(G, YG) & (abs(YC - YG) > 4)
+    # Regola alternativa: differenza anno rilascio > 4 anni (due direzioni)
+    is_bottleneck(C, G) <= cpu_year(C, YC) & gpu_year(G, YG) & (YC - YG > 4)
+    is_bottleneck(C, G) <= cpu_year(C, YC) & gpu_year(G, YG) & (YG - YC > 4)
 
     # Regola Hidden Gem: alto rating, bassa popolarità, prezzo basso
     is_hidden_gem(X) <= rating(X, R) & (R > 8.5) & review_count(X, RC) & (RC < 1000) & price(X, P) & (P < 15)
