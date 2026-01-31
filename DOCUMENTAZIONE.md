@@ -329,61 +329,6 @@ pie title Distribuzione Generi Steam Dataset
     "Altri" : 7.0
 ```
 
-### Distribuzione Rating vs Success Score
-
-```mermaid
-quadrantChart
-    title Distribuzione Giochi per Rating e Success Score
-    x-axis "Rating Basso" --> "Rating Alto"
-    y-axis "Success Score Basso" --> "Success Score Alto"
-    quadrant-1 "Alta Qualità, Popolare"
-    quadrant-2 "Nicchia di Qualità"
-    quadrant-3 "Bassa Qualità"
-    quadrant-4 "Mainstream Medio"
-    Action Games: [0.75, 0.72]
-    RPG Games: [0.78, 0.68]
-    Indie Games: [0.65, 0.82]
-    Strategy Games: [0.80, 0.58]
-    Adventure Games: [0.70, 0.65]
-    Sports Games: [0.62, 0.55]
-    Simulation Games: [0.72, 0.60]
-    Casual Games: [0.58, 0.70]
-```
-
-### Fascie di Prezzo per Genere
-
-```mermaid
-%%{init: {'theme':'base'}}%%
-gantt
-    title Distribuzione Prezzi per Genere (€)
-    dateFormat X
-    axisFormat %s
-    
-    section Action
-    Budget (0-10)     :0, 15
-    Economy (10-30)   :15, 45
-    Standard (30-60)  :45, 30
-    Premium (60+)     :30, 10
-    
-    section RPG
-    Budget (0-10)     :0, 10
-    Economy (10-30)   :10, 35
-    Standard (30-60)  :35, 40
-    Premium (60+)     :40, 15
-    
-    section Indie
-    Budget (0-10)     :0, 45
-    Economy (10-30)   :45, 40
-    Standard (30-60)  :40, 12
-    Premium (60+)     :12, 3
-    
-    section Strategy
-    Budget (0-10)     :0, 12
-    Economy (10-30)   :12, 50
-    Standard (30-60)  :50, 30
-    Premium (60+)     :30, 8
-```
-
 ---
 
 <a name="capitolo-4"></a>
@@ -557,43 +502,6 @@ Step 4: Rinormalizzare risultato
 $$\text{Cost} = 0.3 \times \frac{\text{price}}{\text{budget}} + 0.4 \times (1 - \frac{\text{perf}}{10}) + 0.2 \times \text{brand\_mismatch} + 0.1 \times \frac{\text{noise}}{100}$$
 
 Output: 3-8 configurazioni ordinate per ottimalità
-
-### Performance vs Budget - Grafico Pareto
-
-```mermaid
-quadrantChart
-    title Configurazioni Hardware - Performance vs Prezzo
-    x-axis "Budget Basso" --> "Budget Alto"
-    y-axis "Performance Bassa" --> "Performance Alta"
-    quadrant-1 "Premium Zone"
-    quadrant-2 "Inefficiente"
-    quadrant-3 "Entry Level"
-    quadrant-4 "Sweet Spot"
-    Config Entry 350: [0.20, 0.52]
-    Config Budget 500: [0.28, 0.65]
-    Config Mid 800: [0.45, 0.78]
-    Config High 1200: [0.67, 0.87]
-    Config Enthusiast 1500: [0.83, 0.91]
-    Config Extreme 2000: [0.95, 0.95]
-```
-
-### Progressione Soluzioni CSP per Budget
-
-```mermaid
-%%{init: {'theme':'base'}}%%
-gantt
-    title Numero Configurazioni Valide per Fascia Budget
-    dateFormat X
-    axisFormat %s
-    
-    section Soluzioni
-    €300-500     :0, 2
-    €500-800     :2, 8
-    €800-1200    :8, 12
-    €1200-1500   :12, 18
-    €1500-2000   :18, 24
-    €2000+       :24, 30
-```
 
 ## 6.3 Algoritmo di Risoluzione Dettagliato
 
@@ -858,16 +766,6 @@ quadrantChart
     GAMELOG Sistema: [0.80, 0.98]
 ```
 
-### Diagramma Soddisfazione Utente
-
-```mermaid
-%%{init: {'theme':'base'}}%%
-pie title User Satisfaction Comparison
-    "GAMELOG - Satisfied" : 94
-    "Ricerca Manuale - Satisfied" : 72
-    "Statistical - Satisfied" : 68
-```
-
 ## 7.4 Stress Testing Results
 
 ### Test 1: Carico Concorrente
@@ -892,28 +790,6 @@ Risultati:
 
 Conclusione: Sistema stabile sotto carico
 Throughput massimo: 100 req/min sostenute
-```
-
-### Timeline Performance Under Load
-
-```mermaid
-xychart-beta
-    title "Response Time durante Stress Test (50 req concorrenti)"
-    x-axis [0, 1, 2, 3, 4, 5]
-    y-axis "Latenza (ms)" 0 --> 700
-    line [487, 495, 512, 523, 508, 498]
-    line [580, 585, 580, 590, 575, 570]
-```
-
-### Resource Usage Timeline
-
-```mermaid
-xychart-beta
-    title "Utilizzo Risorse durante Test (5 minuti)"
-    x-axis ["0min", "1min", "2min", "3min", "4min", "5min"]
-    y-axis "Percentuale" 0 --> 100
-    line [45, 68, 78, 75, 72, 48]
-    line [15, 28, 35, 32, 30, 18]
 ```
 
 ---
@@ -1146,7 +1022,6 @@ quadrantChart
     User Satisfaction: [0.94, 0.92]
     Cache Hit Rate: [0.92, 0.80]
 ```
-
 
 ---
 # Riferimenti bibliografici
