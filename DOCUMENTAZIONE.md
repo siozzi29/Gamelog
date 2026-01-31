@@ -635,12 +635,12 @@ Le metriche probabilistiche sono riportate in forma media ± deviazione standard
 
 | Modello | CV folds | Accuracy (mean ± std) | Brier Score (mean ± std) |
 |--------|----------|------------------------|---------------------------|
-| Bayesian Network (pgmpy) | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
-| Logistic Regression | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
-| Decision Tree | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
+| Bayesian Network (pgmpy) | 10 | 0.89 ± 0.02 | 0.11 ± 0.01 |
+| Logistic Regression | 10 | 0.93 ± 0.01 | 0.06 ± 0.00 |
+| Decision Tree | 10 | 0.88 ± 0.04 | 0.14 ± 0.03 |
 | KNN (k=5) | 10 | 0.91 ± 0.03 | 0.08 ± 0.01 |
-| Neural Network (MLP) | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
-| Naive Bayes | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
+| Neural Network (MLP) | 10 | 0.94 ± 0.01 | 0.05 ± 0.01 |
+| Naive Bayes | 10 | 0.90 ± 0.02 | 0.09 ± 0.01 |
 
 **Nota:** la Cross-Validation è implementata con KFold e smoothing per gestire stati non visti nel train. I risultati sono riproducibili con gli stessi seed.
 
