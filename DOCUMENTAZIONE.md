@@ -1,7 +1,13 @@
 # GAMELOG
 ## Sistema Intelligente di Raccomandazione Videogiochi e Hardware
 
-**Autori:** Simone Iozzi, Armando Franchini | **Corso:** Ingegneria della Conoscenza | **A.A.:** 2025-2026
+**Autori:**
+
+Simone Iozzi, MAT 796970, s.iozzi@studenti.uniba.it
+
+Armando Franchini, MAT 798247, a.franchini24@studenti.uniba.it
+
+**Corso:** Ingegneria della Conoscenza | **A.A.:** 2025-2026
 
 ## Indice
 
