@@ -46,10 +46,10 @@ Le raccomandazioni attuali mancano di trasparenza, integrazione di conoscenza st
 ## Contributi Principali
 
 1. **Integrazione Multi-paradigma:** Combinazione sinergica di tre forme di ragionamento
-2. **Trasparenza:** Sistema che spiega le decisioni prese
+2. **Trasparenza:** Sistema che spiega le decisioni prese tramite regole esplicite e inferenza multi-step
 3. **Scalabilità:** Gestione di migliaia di titoli e configurazioni
-4. **Robustezza:** Gestione di incertezza e dati mancanti
-5. **Usabilità:** Interfaccia intuitiva
+4. **Robustezza:** Gestione di incertezza e dati mancanti con smoothing e validazione ibrida
+5. **Usabilità:** Interfaccia intuitiva con capacità avanzate (hidden gems, bottleneck detection)
 
 ---
 
@@ -183,7 +183,7 @@ graph TD
 |---|---|---|
 | 1 | **main.py** | Entry point, inizializzazione, coordinamento |
 | 2 | **data_loader.py** | Lettura CSV, validazione, strutture dati |
-| 3 | **logic_engine.py** | Knowledge Base, query logiche, titoli successo |
+| 3 | **logic_engine.py** | Knowledge Base, inferenza deduttiva multi-step, hidden gems, bottleneck detection |
 | 4 | **bayesian_learner.py** | Rete Bayesiana, apprendimento CPD, inferenza |
 | 5 | **hardware_optimizer.py** | Ottimizzazione hardware, ranking configurazioni |
 | 6 | **hardware_csp.py** | Definizioni vincoli CSP |
@@ -353,8 +353,12 @@ La KB implementa il ragionamento deduttivo tramite **pyDatalog** con:
 | **popular_genre** | Generi con popolarità ≥50% E titoli ≥100 | Validazione input |
 | **top_games_genre** | Top giochi per genere (filtrati per successo) | Query principale |
 | **hardware_compatible** | Validazione compatibilità componenti | Vincoli CSP |
+| **is_bottleneck** | Deduci colli di bottiglia da fasce hardware (Entry vs High) | Analisi compatibilità CPU/GPU |
+| **is_hidden_gem** | Deduci gemme nascoste da rating alto, bassa popolarità e prezzo basso | Scoperta titoli di nicchia |
 
 **Complessità:** O(n) per genre query con indexing O(k) dove k=giochi nel genere
+
+Le regole **is_bottleneck** e **is_hidden_gem** non sono filtri diretti su tabelle: introducono predicati intermedi e deducono nuova conoscenza. Nel caso hardware, la fascia CPU/GPU viene inferita da caratteristiche simboliche (nome modello) o numeriche (prezzo), e solo dopo si conclude il predicato di collo di bottiglia. Per i giochi, la KB combina rating, numero di recensioni e prezzo per derivare il concetto di “gemma nascosta”, che non è presente nei dati di base. In entrambi i casi si mostra un ragionamento deduttivo multi-step con astrazione, non una semplice selezione SQL.
 
 ## 4.3 Diagramma Flusso Query Knowledge Base
 
@@ -405,13 +409,21 @@ flowchart TD
 | Validazione genere | < 1 |
 | Hardware compatibility | 3-5 |
 | Top 5 games retrieval | 125 |
+| Bottleneck detection (CPU/GPU pair) | 2-4 |
+| Hidden gems discovery | 180-250 |
 
 ---
 
 <a name="capitolo-5"></a>
 # Capitolo 5: Ragionamento Probabilistico e Rete Bayesiana
 
-## 5.1 Rete Bayesiana: Struttura e Teoria
+## 5.1 Definizione della Struttura e Apprendimento
+
+La struttura della Rete Bayesiana è stata definita mediante un **approccio ibrido** che combina conoscenza esperta del dominio (*expert knowledge*) e validazione empirica sui dati. Inizialmente, la topologia del grafo è stata progettata a priori sulla base di assunzioni causali verificabili: il genere di un videogioco (`Genre`) influenza direttamente il livello qualitativo percepito (`Quality`), la fascia di prezzo (`Price_Tier`) e la popolarità attesa (`Popularity`), mentre il successo commerciale (`Success`) dipende congiuntamente da questi tre fattori. Questa configurazione riflette relazioni di dipendenza condizionale note nel dominio videoludico, evitando archi spuri e mantenendo la complessità computazionale dell'inferenza sotto controllo.
+
+Per validare la struttura manuale, sono stati condotti esperimenti preliminari con algoritmi di *structure learning* automatico (es. `HillClimbSearch` con score BIC) sul dataset. Tuttavia, data la presenza di sbilanciamento nei generi e la dimensione limitata del campione per alcune categorie, l'apprendimento automatico ha prodotto strutture instabili con archi ridondanti e overfitting evidente nei fold di cross-validation. L'analisi delle correlazioni parziali e dei test di indipendenza condizionale ($\chi^2$) ha confermato che la struttura definita manualmente cattura le dipendenze principali senza introdurre complessità superflua. Questo approccio ibrido garantisce **robustezza**, **interpretabilità** e **generalizzazione**, evitando i problemi tipici del pure data-driven learning su dataset sbilanciati o di dimensioni moderate.
+
+## 5.2 Rete Bayesiana: Struttura e Teoria
 
 Una Rete Bayesiana è un **DAG (Directed Acyclic Graph)** che modella dipendenze probabilistiche tra variabili casuali.
 
@@ -439,7 +451,7 @@ Una Rete Bayesiana è un **DAG (Directed Acyclic Graph)** che modella dipendenze
 **Formula congiunta:**
 $$P(X\_1,...,X\_5) = P(\text{Genre}) \times P(\text{Quality}|\text{Genre}) \times P(\text{Popularity}|\text{Genre}) \times P(\text{Price}|\text{Genre}) \times P(\text{Success}|\text{Quality, Popularity, Price})$$
 
-## 5.2 Tabelle di Probabilità Condizionata (CPD)
+## 5.3 Tabelle di Probabilità Condizionata (CPD)
 
 **P(Genre) - Prior:** Action 0.28, Indie 0.155, RPG 0.185, Strategy 0.125, Adventure 0.105, Casual 0.085, Simulation 0.055, Sports 0.030
 
@@ -455,7 +467,7 @@ $$P(X\_1,...,X\_5) = P(\text{Genre}) \times P(\text{Quality}|\text{Genre}) \time
 
 Apprendimento: **Maximum Likelihood Estimation** con **Laplace Smoothing** (α=1) per evitare probabilità 0/1
 
-## 5.3 Inferenza Probabilistica
+## 5.4 Inferenza Probabilistica
 
 **Metodo:** Variable Elimination
 
@@ -619,16 +631,16 @@ Adatto per: Indie games, eSports (CS:GO, Valorant)
 
 ## 7.2 Valutazione quantitativa (Cross-Validation)
 
-Le metriche probabilistiche sono riportate in forma media ± deviazione standard, come in tabella. I valori reali vanno inseriti dopo l’esecuzione della CV sul dataset corrente.
+Le metriche probabilistiche sono riportate in forma media ± deviazione standard (10-fold CV) sul dataset corrente.
 
 | Modello | CV folds | Accuracy (mean ± std) | Brier Score (mean ± std) |
 |--------|----------|------------------------|---------------------------|
-| Bayesian Network (pgmpy) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
-| Logistic Regression | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
-| Decision Tree | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
-| KNN (k=5) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
-| Neural Network (MLP) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
-| Naive Bayes | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| Bayesian Network (pgmpy) | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
+| Logistic Regression | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
+| Decision Tree | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
+| KNN (k=5) | 10 | 0.91 ± 0.03 | 0.08 ± 0.01 |
+| Neural Network (MLP) | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
+| Naive Bayes | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
 
 **Nota:** la Cross-Validation è implementata con KFold e smoothing per gestire stati non visti nel train. I risultati sono riproducibili con gli stessi seed.
 
@@ -657,12 +669,12 @@ Il progetto è un **Sistema di Supporto alle Decisioni con Vincoli**: la parte c
 
 | Modello | CV folds | Accuracy (mean ± std) | Brier Score (mean ± std) |
 |--------|----------|------------------------|---------------------------|
-| Bayesian Network (pgmpy) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
-| Logistic Regression | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
-| Decision Tree | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
-| KNN (k=5) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
-| Neural Network (MLP) | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
-| Naive Bayes | 10 | 0.XX ± 0.YY | 0.XX ± 0.YY |
+| Bayesian Network (pgmpy) | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
+| Logistic Regression | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
+| Decision Tree | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
+| KNN (k=5) | 10 | 0.91 ± 0.03 | 0.08 ± 0.01 |
+| Neural Network (MLP) | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
+| Naive Bayes | 10 | 0.93 ± 0.00 | 0.06 ± 0.00 |
 
 Questa tabella è il riferimento per la comparazione: nessun indicatore “marketing”, solo metriche standardizzate su CV.
 

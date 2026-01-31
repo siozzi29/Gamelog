@@ -3,9 +3,12 @@ import data_loader
 
 # Definiamo i termini globalmente
 pyDatalog.create_terms(
-    'is_genre, is_success, X, C, G, YC, YG, P, '
+    'is_genre, is_success, is_hidden_gem, X, C, G, YC, YG, P, R, RC, '
     'cpu_price, gpu_price, cpu_year, gpu_year, '
     'cpu_tier, gpu_tier, cpu_budget, gpu_premium, '
+    'cpu_name, gpu_name, cpu_fascia, gpu_fascia, '
+    'cpu_entry_model, gpu_high_model, '
+    'rating, review_count, price, '
     'is_bottleneck'
 )
 
@@ -20,6 +23,18 @@ def setup_logic():
             pyDatalog.assert_fact('is_genre', gioco, g)
         if row['is_success'] == 1:
             pyDatalog.assert_fact('is_success', gioco)
+
+        # Fatti per hidden gem: rating (0-10), review_count, prezzo
+        try:
+            rating_value = float(row['success_rate']) * 10
+            review_count_value = int(row['positive_ratings'] + row['negative_ratings'])
+            price_value = float(row['price'])
+
+            pyDatalog.assert_fact('rating', gioco, rating_value)
+            pyDatalog.assert_fact('review_count', gioco, review_count_value)
+            pyDatalog.assert_fact('price', gioco, price_value)
+        except Exception:
+            pass
 
     # --- Fatti hardware (KB) ---
     # Prezzi e anno rilascio: base conoscitiva per inferenza
@@ -40,22 +55,38 @@ def setup_logic():
         pyDatalog.assert_fact('cpu_price', cpu, meta["price"])
         pyDatalog.assert_fact('cpu_year', cpu, meta["year"])
         pyDatalog.assert_fact('cpu_tier', cpu, meta["tier"])
+        pyDatalog.assert_fact('cpu_name', cpu, cpu)
+
+        cpu_lower = cpu.lower()
+        if ("ryzen 3" in cpu_lower) or ("i3" in cpu_lower) or ("pentium" in cpu_lower):
+            pyDatalog.assert_fact('cpu_entry_model', cpu)
 
     for gpu, meta in gpus.items():
         pyDatalog.assert_fact('gpu_price', gpu, meta["price"])
         pyDatalog.assert_fact('gpu_year', gpu, meta["year"])
         pyDatalog.assert_fact('gpu_tier', gpu, meta["tier"])
+        pyDatalog.assert_fact('gpu_name', gpu, gpu)
+
+        gpu_lower = gpu.lower()
+        if ("rtx 4080" in gpu_lower) or ("rtx 4090" in gpu_lower) or ("rx 7900" in gpu_lower):
+            pyDatalog.assert_fact('gpu_high_model', gpu)
 
     # --- Regole di inferenza ---
-    # Fascia Budget/Premium derivata dal prezzo (non tabellata direttamente)
-    cpu_budget(X) <= cpu_price(X, P) & (P <= 200)
-    gpu_premium(X) <= gpu_price(X, P) & (P >= 500)
+    # Fasce hardware derivate (regole intermedie)
+    cpu_fascia(X, "Entry") <= cpu_entry_model(X)
+    cpu_fascia(X, "Entry") <= cpu_price(X, P) & (P <= 130)
 
-    # Regola di collo di bottiglia: CPU Budget + GPU Premium
-    is_bottleneck(C, G) <= cpu_budget(C) & gpu_premium(G)
+    gpu_fascia(X, "High") <= gpu_high_model(X)
+    gpu_fascia(X, "High") <= gpu_price(X, P) & (P >= 900)
+
+    # Regola di collo di bottiglia: CPU Entry + GPU High
+    is_bottleneck(C, G) <= cpu_fascia(C, "Entry") & gpu_fascia(G, "High")
 
     # Regola alternativa: differenza anno rilascio > 4 anni
     is_bottleneck(C, G) <= cpu_year(C, YC) & gpu_year(G, YG) & (abs(YC - YG) > 4)
+
+    # Regola Hidden Gem: alto rating, bassa popolarità, prezzo basso
+    is_hidden_gem(X) <= rating(X, R) & (R > 8.5) & review_count(X, RC) & (RC < 1000) & price(X, P) & (P < 15)
 
 def query_custom_genre(genere_utente):
     # Trasformiamo l'input dell'utente in minuscolo per il confronto
@@ -64,3 +95,6 @@ def query_custom_genre(genere_utente):
 
 def query_bottlenecks():
     return is_bottleneck(C, G)
+
+def query_hidden_gems():
+    return is_hidden_gem(X)
