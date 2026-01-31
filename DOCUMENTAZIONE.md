@@ -563,12 +563,12 @@ quadrantChart
     quadrant-2 "Inefficiente"
     quadrant-3 "Entry Level"
     quadrant-4 "Sweet Spot"
-    Config Entry €350: [0.20, 0.52]
-    Config Budget €500: [0.28, 0.65]
-    Config Mid €800: [0.45, 0.78]
-    Config High €1200: [0.67, 0.87]
-    Config Enthusiast €1500: [0.83, 0.91]
-    Config Extreme €2000: [0.95, 0.95]
+    Config Entry 350: [0.20, 0.52]
+    Config Budget 500: [0.28, 0.65]
+    Config Mid 800: [0.45, 0.78]
+    Config High 1200: [0.67, 0.87]
+    Config Enthusiast 1500: [0.83, 0.91]
+    Config Extreme 2000: [0.95, 0.95]
 ```
 
 ### Progressione Soluzioni CSP per Budget
@@ -849,7 +849,7 @@ quadrantChart
     quadrant-4 "Veloce ma Impreciso"
     Ricerca Manuale: [0.02, 0.58]
     Collaborative Filtering: [0.85, 0.74]
-    GAMELOG (nostro): [0.80, 0.98]
+    GAMELOG Sistema: [0.80, 0.98]
 ```
 
 ### Diagramma Soddisfazione Utente
@@ -1141,43 +1141,6 @@ quadrantChart
     Cache Hit Rate: [0.92, 0.80]
 ```
 
-### Adozione nel Tempo
-
-```mermaid
-xychart-beta
-    title "Crescita User Adoption e Re-engagement (6 mesi)"
-    x-axis ["Mese 1", "Mese 2", "Mese 3", "Mese 4", "Mese 5", "Mese 6"]
-    y-axis "Percentuale" 0 --> 100
-    line [65, 72, 78, 82, 85, 87]
-    line [45, 52, 58, 60, 62, 64]
-```
-
-### Architecture Evolution Roadmap
-
-```mermaid
-timeline
-    title GAMELOG - Roadmap Sviluppo
-    section Q1 2026
-        MVP Release : Sistema CLI
-                    : 3 paradigmi integrati
-                    : Dataset 25K titoli
-    section Q2 2026
-        API REST : FastAPI backend
-                 : Autenticazione JWT
-                 : Rate limiting
-    section Q3 2026
-        Web Platform : React frontend
-                     : User profiling
-                     : Persistent preferences
-    section Q4 2026
-        ML Enhancement : Collaborative filtering
-                       : Temporal models
-                       : Real-time Steam API
-    section 2027
-        Scale Up : 100K+ titoli
-                 : Mobile app
-                 : Cloud deployment
-```
 
 ---
 # Riferimenti bibliografici
